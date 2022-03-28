@@ -3,18 +3,28 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     //TO DO
     console.log("login form send");
+  };
+
+  const signInWithFb = () => {
+    //TO DO
+    console.log("signInWithFb clicked");
+  };
+
+  const signInWithGoogle = () => {
+    //TO DO
+    console.log("signInWithGoogle clicked");
   };
 
   return (
@@ -45,6 +55,7 @@ const Login = () => {
                 },
               }}
               color="white"
+              onClick={signInWithFb}
             >
               Sign in with Facebook
             </Button>
@@ -59,6 +70,7 @@ const Login = () => {
                 },
               }}
               color="white"
+              onClick={signInWithGoogle}
             >
               Sign in with Google
             </Button>
@@ -95,13 +107,15 @@ const Login = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
+              <Link to={"/forgot-password"}>
+                <Typography variant="body2">Forgot password?</Typography>
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link to={"/signup"}>
+                <Typography variant="body2">
+                  Don't have an account? Sign up
+                </Typography>
               </Link>
             </Grid>
           </Grid>
