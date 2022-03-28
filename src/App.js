@@ -1,15 +1,14 @@
 //import logo from './logo.svg';
 //import './App.css';
-import { ThemeProvider, Typography } from '@mui/material';
-import theme from "./styles/theme"
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./styles/theme";
+import MainRoute from "./router/MainRoute";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Typography variant="h2" component="div" color="primary.main">
-          Hello
-        </Typography>
+        <MainRoute />
       </div>
     </ThemeProvider>
   );
