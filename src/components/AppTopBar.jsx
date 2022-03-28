@@ -29,7 +29,7 @@ const AppTopBar = () => {
               </Typography>
             </Link>
           </Box>
-          <Link to={"/login"}>
+          <Link to={"/signin"}>
             <IconButton
               size="large"
               aria-label="account of current user"
