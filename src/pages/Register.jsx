@@ -36,6 +36,8 @@ const Register = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          boxShadow: 1,
+          p: 1,
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
