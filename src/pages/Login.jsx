@@ -9,6 +9,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
+import { signInGoogle, signInEmail } from "../auth";
 
 const Login = () => {
   const handleSubmit = (event) => {
@@ -24,7 +25,7 @@ const Login = () => {
 
   const signInWithGoogle = () => {
     //TO DO
-    console.log("signInWithGoogle clicked");
+    signInGoogle()
   };
 
   return (

@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, signOut, signInWithPopup } from "firebase/auth"
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signOut, signInWithPopup } from "firebase/auth"
 
 const auth = getAuth()
 
@@ -35,10 +35,6 @@ function signInGoogle(){
     return signInProvider(GoogleAuthProvider)
 }
 
-function signInFacebook(){
-    return signInProvider(FacebookAuthProvider)
-}
-
 function logout() {
     return signOut(auth).then(() => {
         return true
@@ -49,3 +45,5 @@ function logout() {
         }
     })
 }
+
+export { signInGoogle, signInEmail, logout}
