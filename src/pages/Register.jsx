@@ -9,11 +9,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
+import { signUpEmail } from "../firebase"
 
 const Register = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    //TO DO
+    signUpEmail('duap@dupadua.org', 'upasdasdda').then(result =>{
+        console.log(result)
+      }
+    )
     console.log("register form send");
   };
 

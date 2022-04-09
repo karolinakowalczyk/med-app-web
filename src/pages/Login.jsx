@@ -9,12 +9,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
-import { signInGoogle, signInEmail } from "../auth";
+import { signInGoogle, signInEmail } from "../firebase";
 
 const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    //TO DO
+    signInEmail('duap@dupadua.org', 'upasdasdda').then(result => {
+      console.log(result)
+    })
     console.log("login form send");
   };
 
@@ -25,7 +27,9 @@ const Login = () => {
 
   const signInWithGoogle = () => {
     //TO DO
-    signInGoogle()
+    signInGoogle().then(result => {
+      console.log(result)
+    })
   };
 
   return (
