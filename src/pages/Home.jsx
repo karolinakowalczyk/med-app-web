@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import Social from "../components/Social";
 import useClasses from "../styles/useClasses";
 import homeStyles from "../styles/homeStyles";
+import teddy_background from "../assets/images/teddy_bear_background.png";
+import teddy from "../assets/images/teddy_bear_enhanced.png";
 
 const Home = () => {
   const [shouldShow, setShouldShow] = useState(false);
@@ -20,20 +22,22 @@ const Home = () => {
   const styles = useClasses(homeStyles);
   return (
     <Paper className={styles.section} id="about">
-      <div className={styles.filledBackground}></div>
       {bigScreen && (
         <img
           className={styles.heroImage}
-          src="https://pbs.twimg.com/media/Dw3VIX8WkAARD9x?format=jpg&name=900x900"
-          alt=""
+          src={teddy_background}
+          alt="desktop teddy"
         />
       )}
       {!bigScreen && (
-        <img
-          className={styles.mobileHeroImage}
-          src="https://pbs.twimg.com/media/Dw3VIX8WkAARD9x?format=jpg&name=900x900"
-          alt=""
-        />
+        <div>
+          <div className={styles.filledBackground}></div>
+          <img
+            className={styles.mobileHeroImage}
+            src={teddy}
+            alt="mobile teddy"
+          />
+        </div>
       )}
       <div className={styles.overlay}></div>
       <Container className={styles.container} maxWidth="md">

@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -59,7 +61,7 @@ const Login = () => {
               color="white"
               onClick={signInWithFb}
             >
-              Sign in with Facebook
+              Sign in with <FacebookIcon sx={{ ml: 2 }} />
             </Button>
           </Grid>
           <Grid item>
@@ -74,7 +76,7 @@ const Login = () => {
               color="white"
               onClick={signInWithGoogle}
             >
-              Sign in with Google
+              Sign in with <GoogleIcon sx={{ ml: 2 }} />
             </Button>
           </Grid>
         </Grid>
