@@ -13,11 +13,31 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { Link } from "react-router-dom";
 import { signInGoogle, signInEmail } from "../firebase";
 
-const Login = () => {
+const Login = (props) => {
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const onChangeEmail = (e) => {
+    const username = e.target.value;
+    setEmail(username);
+    
+  }
+
+  const onChangePassword = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    signInEmail('duap@dupadua.org', 'upasdasdda').then(result => {
-      console.log(result)
+    signInEmail(email, password).then(result => {
+      if(result.errorCode===undefined){
+          // props.history.push("/profile");
+        // window.location.reload();
+        //TODO PROFILE REDIRECT
+      }
+      else{
+        //TODO Login error
+      }
     })
     console.log("login form send");
   };
@@ -28,9 +48,15 @@ const Login = () => {
   };
 
   const signInWithGoogle = () => {
-    //TO DO
     signInGoogle().then(result => {
-      console.log(result)
+      if(result.errorCode===undefined){
+        // props.history.push("/profile");
+        // window.location.reload();
+        //TODO PROFILE REDIRECT
+    }
+    else{
+      //TODO Login error
+    }
     })
   };
 
@@ -94,6 +120,8 @@ const Login = () => {
             label="Email Address"
             name="email"
             autoComplete="email"
+            value={email}
+            onChange={onChangeEmail}
             autoFocus
           />
           <TextField
@@ -104,6 +132,8 @@ const Login = () => {
             label="Password"
             type="password"
             id="password"
+            value={password}
+            onChange={onChangePassword}
             autoComplete="current-password"
           />
           <Button
