@@ -1,14 +1,14 @@
 import React from "react";
 import { Typography } from "@mui/material/";
 
-const ForgotPassword = () => {
+const CalendarPage = () => {
   return (
     <div>
       <Typography variant="h2" component="div" color="primary.main">
-        Frogot password
+        Calendar Page
       </Typography>
     </div>
   );
 };
 
-export default ForgotPassword;
+export default CalendarPage;

@@ -4,6 +4,7 @@ import Register from "../pages/Register";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import ForgotPassword from "../pages/ForgotPassword";
+import CalendarPage from "../pages/CalendarPage";
 import AppTopBar from "../components/AppTopBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -17,6 +18,7 @@ const MainRoute = () => {
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/calendar" element={<CalendarPage />} />
       </Routes>
     </BrowserRouter>
   );
