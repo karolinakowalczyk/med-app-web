@@ -1,6 +1,6 @@
 const homeStyles = (theme) => ({
   section: {
-    height: "90vh",
+    height: "93.4vh",
     position: "relative",
   },
   content: {

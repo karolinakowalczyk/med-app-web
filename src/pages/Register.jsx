@@ -17,16 +17,6 @@ const Register = () => {
     console.log("register form send");
   };
 
-  const signUpWithFb = () => {
-    //TO DO
-    console.log("signUpWithFb clicked");
-  };
-
-  const signUpWithGoogle = () => {
-    //TO DO
-    console.log("signUpWithGoogle clicked");
-  };
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -46,38 +36,6 @@ const Register = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Grid container sx={{ mt: 4 }}>
-          <Grid item xs>
-            <Button
-              sx={{
-                bgcolor: "#3C589C",
-                ":hover": {
-                  color: "black",
-                  transitionDuration: "1s",
-                },
-              }}
-              color="white"
-              onClick={signUpWithFb}
-            >
-              Sign up with Facebook
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              sx={{
-                bgcolor: "#DF4B3B",
-                ":hover": {
-                  color: "black",
-                  transitionDuration: "1s",
-                },
-              }}
-              color="white"
-              onClick={signUpWithGoogle}
-            >
-              Sign up with Google
-            </Button>
-          </Grid>
-        </Grid>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
