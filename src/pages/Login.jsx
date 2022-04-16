@@ -60,7 +60,7 @@ const Login = (props) => {
     signInGoogle().then(result => {
       if(result.errorCode===undefined){
         let name = result.user.displayName.split(' ')
-        registerDataSubmit(name[0], name[name.length - 1], result.user.uid)
+        registerDataSubmit(name[0], name[name.length - 1], result.user.uid, null)
         loginRedirect()
     }
     else{

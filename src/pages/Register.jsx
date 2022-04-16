@@ -51,7 +51,7 @@ const Register = () => {
     event.preventDefault();
     signUpEmail(email, password).then(result => {
       if(result.errorCode===undefined){
-          registerDataSubmit(fname, lname, result.uid)
+          registerDataSubmit(fname, lname, result.uid, null)
           loginRedirect()
       }
       else{
