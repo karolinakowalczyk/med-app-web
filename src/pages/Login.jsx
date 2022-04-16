@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { signInGoogle, signInEmail } from "../firebase";
+import { signInGoogle, signInEmail, registerDataSubmit } from "../firebase";
 
 
 
@@ -59,6 +59,8 @@ const Login = (props) => {
   const signInWithGoogle = () => {
     signInGoogle().then(result => {
       if(result.errorCode===undefined){
+        let name = result.user.displayName.split(' ')
+        registerDataSubmit(name[0], name[name.length - 1], result.user.uid)
         loginRedirect()
     }
     else{

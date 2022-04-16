@@ -80,7 +80,7 @@ function signUpEmail(email, password) {
         });
 }
 
-function registerDataSubmit(firstName, lastName, uid){
+function registerDataSubmit(firstName, lastName, uid, data){
     setDoc(doc(db, collections.doctors, uid), {
         "firstName": firstName,
         "lastName": lastName,
