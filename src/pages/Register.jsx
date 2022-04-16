@@ -8,14 +8,58 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signUpEmail } from "../firebase"
 
 const Register = () => {
+  const navigate = useNavigate()
+  const loginRedirect = () => {
+    navigate("/login", {replace: true})
+  }
+  
+  const loginError = () => {
+  
+  }
+
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const [fname, setFname] = React.useState("")
+  const [lname, setLname] = React.useState("")
+
+  const onChangeEmail = (e) => {
+    const username = e.target.value;
+    setEmail(username);
+    
+  }
+
+  const onChangePassword = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+  }
+
+  const onChangeFname = (e) => {
+    const fname = e.target.value;
+    setFname(fname);
+  }
+
+  const onChangeLname = (e) => {
+    const lname = e.target.value;
+    setLname(lname);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    //TO DO
+    signUpEmail(email, password).then(result => {
+      if(result.errorCode===undefined){
+          loginRedirect()
+      }
+      else{
+          loginError()
+      }
+    })
     console.log("register form send");
   };
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,6 +90,8 @@ const Register = () => {
                 fullWidth
                 id="firstName"
                 label="First Name"
+                value={fname}
+                onChange={onChangeFname}
                 autoFocus
               />
             </Grid>
@@ -56,6 +102,8 @@ const Register = () => {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
+                value={lname}
+                onChange={onChangeLname}
                 autoComplete="family-name"
               />
             </Grid>
@@ -67,6 +115,8 @@ const Register = () => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={onChangeEmail}
               />
             </Grid>
             <Grid item xs={12}>
@@ -77,6 +127,8 @@ const Register = () => {
                 label="Password"
                 type="password"
                 id="password"
+                value={password}
+                onChange={onChangePassword}
                 autoComplete="new-password"
               />
             </Grid>
