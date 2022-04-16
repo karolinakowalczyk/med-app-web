@@ -9,12 +9,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
-import { signUpEmail } from "../firebase"
+import { registerDataSubmit, signUpEmail } from "../firebase"
 
 const Register = () => {
   const navigate = useNavigate()
   const loginRedirect = () => {
-    navigate("/login", {replace: true})
+    navigate("/signin", {replace: true})
   }
   
   const loginError = () => {
@@ -51,6 +51,7 @@ const Register = () => {
     event.preventDefault();
     signUpEmail(email, password).then(result => {
       if(result.errorCode===undefined){
+          registerDataSubmit(fname, lname, result.uid)
           loginRedirect()
       }
       else{
