@@ -10,10 +10,21 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signInGoogle, signInEmail } from "../firebase";
 
+
+
 const Login = (props) => {
+  const navigate = useNavigate()
+  const loginRedirect = () => {
+    navigate("/calendar", {replace: true})
+  }
+  
+  const loginError = () => {
+  
+  }
+
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
   const onChangeEmail = (e) => {
@@ -31,12 +42,10 @@ const Login = (props) => {
     event.preventDefault();
     signInEmail(email, password).then(result => {
       if(result.errorCode===undefined){
-          // props.history.push("/profile");
-        // window.location.reload();
-        //TODO PROFILE REDIRECT
+          loginRedirect()
       }
       else{
-        //TODO Login error
+          loginError()
       }
     })
     console.log("login form send");
@@ -50,12 +59,10 @@ const Login = (props) => {
   const signInWithGoogle = () => {
     signInGoogle().then(result => {
       if(result.errorCode===undefined){
-        // props.history.push("/profile");
-        // window.location.reload();
-        //TODO PROFILE REDIRECT
+        loginRedirect()
     }
     else{
-      //TODO Login error
+        loginError()
     }
     })
   };

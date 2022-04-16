@@ -75,4 +75,5 @@ function signUpEmail(email, password) {
         });
 }
 
-export { signInGoogle, signInEmail, logout, signUpEmail}
+
+export { signInGoogle, signInEmail, logout, signUpEmail }
