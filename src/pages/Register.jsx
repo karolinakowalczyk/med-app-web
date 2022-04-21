@@ -14,7 +14,7 @@ import { registerDataSubmit, signUpEmail } from "../firebase"
 const Register = () => {
   const navigate = useNavigate()
   const loginRedirect = () => {
-    navigate("/signin", {replace: true})
+    navigate("/signin",  {replace: true})
   }
   
   const loginError = () => {
