@@ -1,6 +1,11 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection } from 'firebase/firestore/lite'
+import { getFirestore, doc, setDoc } from 'firebase/firestore/lite'
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signOut, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
+
+const collections = {
+    doctors: "doctors",
+    patients: 'patients'
+}
 
 const firebaseConfig = {
     apiKey: "AIzaSyCGWVpgsmRqRTdzEBVqKkAfGZIfYqayoK0",
@@ -75,5 +80,11 @@ function signUpEmail(email, password) {
         });
 }
 
+function registerDataSubmit(firstName, lastName, uid, data){
+    setDoc(doc(db, collections.doctors, uid), {
+        "firstName": firstName,
+        "lastName": lastName,
+    })
+}
 
-export { signInGoogle, signInEmail, logout, signUpEmail }
+export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit }
