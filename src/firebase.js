@@ -61,6 +61,7 @@ function signInGoogle(){
 
 function logout() {
     return signOut(auth).then(() => {
+        localStorage.clear()
         return true
     }). catch((error) => {
         return {
