@@ -25,10 +25,17 @@ const Register = () => {
   const [password, setPassword] = React.useState("")
   const [fname, setFname] = React.useState("")
   const [lname, setLname] = React.useState("")
+  const [phone, setPhone] = React.useState("")
 
   const onChangeEmail = (e) => {
     const username = e.target.value;
     setEmail(username);
+    
+  }
+
+  const onChangePhone = (e) => {
+    const phone = e.target.value;
+    setEmail(phone);
     
   }
 
@@ -51,7 +58,7 @@ const Register = () => {
     event.preventDefault();
     signUpEmail(email, password).then(result => {
       if(result.errorCode===undefined){
-          registerDataSubmit(fname, lname, result.uid, null)
+          registerDataSubmit(fname + " " + lname, email, result.uid, null)
           loginRedirect()
       }
       else{

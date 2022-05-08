@@ -80,10 +80,11 @@ function signUpEmail(email, password) {
         });
 }
 
-function registerDataSubmit(firstName, lastName, uid, data){
+function registerDataSubmit(name, email, phone, uid, data){
     setDoc(doc(db, collections.doctors, uid), {
-        "firstName": firstName,
-        "lastName": lastName,
+        "name": name,
+        "email": email,
+        "phone": phone
     })
 }
 
