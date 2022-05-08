@@ -1,10 +1,11 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore/lite'
+import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from 'firebase/firestore/lite'
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signOut, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
 
 const collections = {
     doctors: "doctors",
-    patients: 'patients'
+    patients: 'patients',
+    appointments: 'appointments'
 }
 
 const firebaseConfig = {
@@ -88,11 +89,38 @@ function registerDataSubmit(name, email, phone, uid, data){
     })
 }
 
-function getUser(uid){
-    return getDoc(doc(db, collections.doctors, uid)).then(result =>{
+function getDocById(col, id){
+    return getDoc(doc(db, col, id)).then(result =>{
         if(result.exists()) return result.data()
         else return undefined
     })
 }
 
-export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser }
+async function getByQuery(q){
+    return getDocs(q).then(snap => {
+        let result = []
+        snap.forEach((doc) => {
+            result.push(doc.data())
+        })
+        return result
+    })
+}
+
+function getUser(uid){
+    return getDocById(collections.doctors, uid)
+}
+
+function getPatient(id){
+    return getDocById(collections.patients, id)
+}
+
+function getAppointment(id){
+    return getDocById(collections.appointments, id)
+}
+
+function getUsersAppointmentsOnDay(uid, date){
+    const q = query(collection(db, collections.appointments+'/'+date+'/'+collections.appointments), where("doctor", '==', uid))
+    return getByQuery(q)
+}
+
+export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, getUsersAppointmentsOnDay }
