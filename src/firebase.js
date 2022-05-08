@@ -1,11 +1,13 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from 'firebase/firestore/lite'
+import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs, addDoc } from 'firebase/firestore/lite'
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signOut, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
+import { CoPresent } from '@mui/icons-material'
 
 const collections = {
     doctors: "doctors",
     patients: 'patients',
-    appointments: 'appointments'
+    appointments: 'appointments',
+    prescriptions: 'prescriptions'
 }
 
 const firebaseConfig = {
@@ -123,4 +125,23 @@ function getUsersAppointmentsOnDay(uid, date){
     return getByQuery(q)
 }
 
-export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, getUsersAppointmentsOnDay }
+function addPrescription(patient, date, uid, medicines, done){
+    addDoc(collection(db, collections.patients+'/'+patient+'/'+collections.prescriptions), {
+        "done": done,
+        "date": date,
+        "doctor": uid,
+        "medicines": medicines
+    })
+}
+
+function getPrescriptions(patient, uid){
+    return getByQuery(
+        query(
+            collection(db, collections.patients + '/' + patient + '/' + collections.prescriptions),
+            where('doctor', '==', uid)
+            )
+        )
+}
+
+export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, 
+    getUsersAppointmentsOnDay, addPrescription, getPrescriptions }
