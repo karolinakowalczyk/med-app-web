@@ -35,7 +35,7 @@ const Register = () => {
 
   const onChangePhone = (e) => {
     const phone = e.target.value;
-    setEmail(phone);
+    setPhone(phone);
     
   }
 
@@ -58,7 +58,7 @@ const Register = () => {
     event.preventDefault();
     signUpEmail(email, password).then(result => {
       if(result.errorCode===undefined){
-          registerDataSubmit(fname + " " + lname, email, result.uid, null)
+          registerDataSubmit(fname + " " + lname, email, phone, result.uid, null)
           loginRedirect()
       }
       else{

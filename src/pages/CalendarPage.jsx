@@ -8,6 +8,8 @@ const CalendarPage = (props) => {
   console.log(userID)
   //getUser(userID).then(result => console.log(result))
   getUsersAppointmentsOnDay(userID, '04-05-2022').then(result => result.forEach((doc) => console.log(doc)))
+  //addPrescription('NNh2LItiPagfRh6qAuVwdwvYLdt1', '08-05.2022', userID, [{name: 'ketamine', description: 'ketamina'}], false)
+  getPrescriptions('NNh2LItiPagfRh6qAuVwdwvYLdt1', userID).then(result => result.forEach((doc) => console.log(doc)))
   return (
     <Box
       component="main"
