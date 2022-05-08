@@ -4,6 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
+import { useNavigate } from "react-router-dom";
 import { INITIAL_EVENTS, createEventId, getAppointments } from "./event-utils";
 import {
   Dialog,
@@ -19,11 +20,14 @@ const Calendar = () => {
   const [weekendsVisible, setWeekendsVisible] = useState(true);
   const [currentEvents, setCurrentEvents] = useState([]);
   const [initialAppointments, setInitialAppointments] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+  // const [open, setOpen] = useState(false);
+  // const [title, setTitle] = useState('');
+  // const [patient, setPatient] = useState
 
-  const handleClose = () => {
+  /*const handleClose = () => {
     setOpen(false);
-  };
+  };*/
 
   useEffect(() => {
     const loadAppointments = async () => {
@@ -36,10 +40,11 @@ const Calendar = () => {
   }, []);
 
   const handleDateSelect = (selectInfo) => {
+    console.log("add appointment");
     //add to database
     //setOpen(true);
-    let title = prompt("Please enter a new title for your event");
-    let calendarApi = selectInfo.view.calendar;
+    //let title = prompt("Please enter a new title for your event");
+    /*let calendarApi = selectInfo.view.calendar;
 
     calendarApi.unselect(); // clear date selection
 
@@ -51,7 +56,7 @@ const Calendar = () => {
         end: selectInfo.endStr,
         allDay: selectInfo.allDay,
       });
-    }
+    }*/
   };
   const renderEventContent = (eventInfo) => {
     return (
@@ -63,7 +68,10 @@ const Calendar = () => {
   };
   const handleEventClick = (clickInfo) => {
     console.log("event selected");
-    //clickInfo.event.remove();
+    console.log(clickInfo.event.extendedProps.patientId);
+    navigate(`/patient-details/${clickInfo.event.extendedProps.patientId}`, {
+      id: clickInfo.event.extendedProps.patientId,
+    });
   };
 
   const handleEvents = (events) => {
@@ -95,7 +103,7 @@ const Calendar = () => {
             eventRemove={function(){}}
             */
       />
-      <Dialog open={open} onClose={handleClose}>
+      {/*<Dialog open={open} onClose={handleClose}>
         <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -116,7 +124,7 @@ const Calendar = () => {
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleClose}>Subscribe</Button>
         </DialogActions>
-      </Dialog>
+    </Dialog>*/}
     </div>
   );
 };

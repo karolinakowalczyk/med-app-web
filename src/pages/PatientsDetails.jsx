@@ -1,25 +1,32 @@
-import React from "react";
-import { Typography } from "@mui/material/";
-import { Box } from "@mui/material";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
-  getUser,
-  getPatient,
-  getUsersAppointmentsOnDay,
-  updatePrescription,
-} from "../firebase";
-import Calendar from "../components/Calendar";
+  Box,
+  Typography,
+  TextField,
+  TextareaAutosize,
+  IconButton,
+  Button,
+  Grid,
+} from "@mui/material";
+import { getPatient } from "../firebase";
+import SaveIcon from "@mui/icons-material/Save";
 
 const PatientsDetails = (props) => {
-  let userID = localStorage.getItem("userID");
-  //console.log(userID);
-  //getUser(userID).then(result => console.log(result))
-  /*getUsersAppointmentsOnDay(userID, "04-05-2022").then((result) =>
-      result.forEach((doc) => console.log(doc))
-    );*/
-  //addPrescription('NNh2LItiPagfRh6qAuVwdwvYLdt1', '08-05.2022', userID, [{name: 'ketamine', description: 'ketamina'}], false)
-  updatePrescription("NNh2LItiPagfRh6qAuVwdwvYLdt1", "HjmqG5TTjxlzfdQrVhqz", {
-    date: "08-05-2022",
-  });
+  const [prescriptionCode, setPrescriptionCode] = useState("");
+  let { id } = useParams();
+  console.log("PARAMTER" + id);
+  //get parient dont work
+  let currentPatient = getPatient("iDIhspVovGeQUPqg2kleDXf2oe22");
+  console.log("PAT" + currentPatient.name);
+  const onChangePrescriptionCode = (e) => {
+    const prescriptionCode = e.target.value;
+    setPrescriptionCode(prescriptionCode);
+  };
+  const saveRecommandations = () => {
+    //TO DO
+    console.log("recomandations saved!");
+  };
   return (
     <Box
       component="main"
@@ -30,7 +37,47 @@ const PatientsDetails = (props) => {
         p: 3,
       }}
     >
-      <h1>patients details</h1>
+      <Typography component="h1" variant="h5">
+        Patient XYZ
+      </Typography>
+      <TextField
+        margin="normal"
+        type="number"
+        required
+        fullWidth
+        id="prescriptionCode"
+        label="Prescription Code"
+        name="prescriptionCode"
+        autoComplete="prescription code"
+        value={prescriptionCode}
+        onChange={onChangePrescriptionCode}
+        autoFocus
+      />
+      <TextareaAutosize
+        aria-label="Recommendations"
+        minRows={10}
+        placeholder="Recommendations for patient"
+        style={{ width: "99.3%" }}
+      />
+
+      <Grid container>
+        <Grid item xs>
+          <Button type="submit" variant="contained">
+            Save changes
+          </Button>
+        </Grid>
+        <Grid item>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={saveRecommandations}
+          >
+            <SaveIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

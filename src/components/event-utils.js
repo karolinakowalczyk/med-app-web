@@ -37,7 +37,8 @@ export const getAppointments = async () => {
             initialAppointments.push({
                 id: createEventId(),
                 title: doc.title + ' ' + doc.patientName,
-                start: doc.date.split("-").reverse().join("-") + "T" + doc.hour + ":00"
+                start: doc.date.split("-").reverse().join("-") + "T" + doc.hour + ":00",
+                patientId: doc.patient
                 //end: todayStr + 'T01:00:00',
             })
         })
