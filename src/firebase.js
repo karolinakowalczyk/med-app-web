@@ -116,6 +116,10 @@ function getPatient(id){
     return getDocById(collections.patients, id)
 }
 
+function getAllPatients(uid){
+    return getByQuery(query(collection(db, collections.patients), where('doctor', '==', uid)))
+}
+
 function getAppointment(id){
     return getDocById(collections.appointments, id)
 }
@@ -144,4 +148,4 @@ function getPrescriptions(patient, uid){
 }
 
 export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, 
-    getUsersAppointmentsOnDay, addPrescription, getPrescriptions }
+    getUsersAppointmentsOnDay, addPrescription, getPrescriptions, getAllPatients }
