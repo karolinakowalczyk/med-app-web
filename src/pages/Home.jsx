@@ -18,7 +18,7 @@ import teddy from "../assets/images/teddy_bear_enhanced.png";
 const Home = () => {
   const [shouldShow, setShouldShow] = useState(false);
   useEffect(() => setShouldShow(true), []);
-  const bigScreen = useMediaQuery("(min-width:700px)");
+  const bigScreen = useMediaQuery("(min-width:600px)");
   const styles = useClasses(homeStyles);
   return (
     <Paper className={styles.section} id="about">

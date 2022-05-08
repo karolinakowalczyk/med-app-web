@@ -1,12 +1,19 @@
 import React from "react";
-import { Container } from "@mui/material/";
+import { Box } from "@mui/material/";
 import ErrorMessage from "../components/ErrorMessage";
 
-const NotFound = () => {
+const NotFound = (props) => {
   return (
-    <Container maxWidth="sm" sx={{ mt: "1rem" }}>
-      <ErrorMessage message="Not Found"></ErrorMessage>
-    </Container>
+    <Box
+      component="main"
+      maxWidth="sm"
+      sx={{
+        ml: { sm: `${props.drawerWidth}px` },
+        p: 3,
+      }}
+    >
+      <ErrorMessage message="Not Found"> </ErrorMessage>{" "}
+    </Box>
   );
 };
 
