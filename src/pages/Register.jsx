@@ -9,65 +9,59 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
-import { registerDataSubmit, signUpEmail } from "../firebase"
+import { registerDataSubmit, signUpEmail } from "../firebase";
 
 const Register = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const loginRedirect = () => {
-    navigate("/signin",  {replace: true})
-  }
-  
-  const loginError = () => {
-  
-  }
+    navigate("/signin", { replace: true });
+  };
 
-  const [email, setEmail] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [fname, setFname] = React.useState("")
-  const [lname, setLname] = React.useState("")
-  const [phone, setPhone] = React.useState("")
+  const loginError = () => {};
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [fname, setFname] = React.useState("");
+  const [lname, setLname] = React.useState("");
+  const [phone, setPhone] = React.useState("");
 
   const onChangeEmail = (e) => {
     const username = e.target.value;
     setEmail(username);
-    
-  }
+  };
 
   const onChangePhone = (e) => {
     const phone = e.target.value;
-    setEmail(phone);
-    
-  }
+    setPhone(phone);
+  };
 
   const onChangePassword = (e) => {
     const password = e.target.value;
     setPassword(password);
-  }
+  };
 
   const onChangeFname = (e) => {
     const fname = e.target.value;
     setFname(fname);
-  }
+  };
 
   const onChangeLname = (e) => {
     const lname = e.target.value;
     setLname(lname);
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    signUpEmail(email, password).then(result => {
-      if(result.errorCode===undefined){
-          registerDataSubmit(fname + " " + lname, email, result.uid, null)
-          loginRedirect()
+    signUpEmail(email, password).then((result) => {
+      if (result.errorCode === undefined) {
+        registerDataSubmit(fname + " " + lname, phone, email, result.uid, null);
+        loginRedirect();
+      } else {
+        loginError();
       }
-      else{
-          loginError()
-      }
-    })
+    });
     console.log("register form send");
   };
-
 
   return (
     <Container component="main" maxWidth="xs">
@@ -113,6 +107,18 @@ const Register = () => {
                 value={lname}
                 onChange={onChangeLname}
                 autoComplete="family-name"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="phone"
+                label="Phone"
+                name="phone"
+                autoComplete="phone"
+                value={phone}
+                onChange={onChangePhone}
               />
             </Grid>
             <Grid item xs={12}>
