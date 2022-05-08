@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Toolbar, AppBar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -10,15 +10,29 @@ import { Link } from "react-router-dom";
 import AppDrawer from "./AppDrawer";
 
 import AppName from "./AppName";
-
 const AppTopBar = (props) => {
-  //change when log in
-  const [isAuth, setIsAuth] = useState(true);
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("userID"));
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     console.log("p " + props.drawerWidth);
     setMobileOpen(!mobileOpen);
+  };
+
+  useEffect(() => {
+    const onLoad = async () => {
+      if (isAuth) {
+        setIsAuth(true);
+      } else {
+        setIsAuth(false);
+      }
+    };
+    onLoad();
+  }, [isAuth]);
+
+  const logOut = () => {
+    setIsAuth(false);
+    localStorage.removeItem("userID");
   };
 
   return (
@@ -68,6 +82,7 @@ const AppTopBar = (props) => {
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
                   color="white"
+                  onClick={logOut}
                 >
                   <LogoutIcon />
                 </IconButton>
