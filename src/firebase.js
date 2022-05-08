@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, setDoc } from 'firebase/firestore/lite'
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore/lite'
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signOut, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
 
 const collections = {
@@ -87,4 +87,11 @@ function registerDataSubmit(firstName, lastName, uid, data){
     })
 }
 
-export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit }
+function getUser(uid){
+    return getDoc(doc(db, collections.doctors, uid)).then(result =>{
+        if(result.exists()) return result.data()
+        else return undefined
+    })
+}
+
+export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser }
