@@ -27,16 +27,18 @@ export const getAppointments = async () => {
     let initialAppointments = [];
     let userID = localStorage.getItem("userID");
     // console.log(userID);
-    //getUser(userID).then(result => console.log(result))
+    // getUser(userID).then(result => console.log(result))
     await getUsersAppointmentsOnDay("akRU3kHoRLdpqXh3TGCDcDoVuMw1", "08-05-2022").then((result) => {
         console.log("ccc")
         result.forEach((doc) => console.log(doc))
+
         result.forEach((doc) => {
+            console.log(doc.date.split("-").reverse().join("-") + "T" + doc.hour + ":00")
             initialAppointments.push({
                 id: createEventId(),
-                title: 'haah',
-                start: todayStr + 'T12:00:00',
-                end: todayStr + 'T13:30:00',
+                title: doc.title + ' ' + doc.patientName,
+                start: doc.date.split("-").reverse().join("-") + "T" + doc.hour + ":00"
+                //end: todayStr + 'T01:00:00',
             })
         })
     });

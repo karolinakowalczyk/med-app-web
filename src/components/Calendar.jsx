@@ -5,11 +5,25 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId, getAppointments } from "./event-utils";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  TextField,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
 const Calendar = () => {
   const [weekendsVisible, setWeekendsVisible] = useState(true);
   const [currentEvents, setCurrentEvents] = useState([]);
   const [initialAppointments, setInitialAppointments] = useState([]);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const loadAppointments = async () => {
@@ -22,6 +36,8 @@ const Calendar = () => {
   }, []);
 
   const handleDateSelect = (selectInfo) => {
+    //add to database
+    //setOpen(true);
     let title = prompt("Please enter a new title for your event");
     let calendarApi = selectInfo.view.calendar;
 
@@ -79,6 +95,28 @@ const Calendar = () => {
             eventRemove={function(){}}
             */
       />
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To subscribe to this website, please enter your email address here.
+            We will send updates occasionally.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Subscribe</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
