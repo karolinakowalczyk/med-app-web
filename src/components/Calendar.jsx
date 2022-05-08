@@ -4,11 +4,22 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
-import { INITIAL_EVENTS, createEventId } from "./event-utils";
+import { INITIAL_EVENTS, createEventId, getAppointments } from "./event-utils";
 
 const Calendar = () => {
   const [weekendsVisible, setWeekendsVisible] = useState(true);
-  const [currentEvents, setCurrentEvents] = React.useState([]);
+  const [currentEvents, setCurrentEvents] = useState([]);
+  const [initialAppointments, setInitialAppointments] = useState([]);
+
+  useEffect(() => {
+    const loadAppointments = async () => {
+      let appointments = await getAppointments();
+      setInitialAppointments(appointments);
+      console.log("initial");
+      await console.log(initialAppointments);
+    };
+    loadAppointments();
+  }, []);
 
   const handleDateSelect = (selectInfo) => {
     let title = prompt("Please enter a new title for your event");
@@ -35,7 +46,8 @@ const Calendar = () => {
     );
   };
   const handleEventClick = (clickInfo) => {
-    clickInfo.event.remove();
+    console.log("event selected");
+    //clickInfo.event.remove();
   };
 
   const handleEvents = (events) => {
@@ -50,13 +62,13 @@ const Calendar = () => {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
-        initialView="timeGridWeek"
+        initialView="timeGridDay"
         editable={true}
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
         weekends={weekendsVisible}
-        initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+        events={initialAppointments} // alternatively, use the `events` setting to fetch from a feed
         select={handleDateSelect}
         eventContent={renderEventContent} // custom render function
         eventClick={handleEventClick}
