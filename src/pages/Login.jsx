@@ -93,10 +93,10 @@ const Login = (props) => {
           }}
         >
           <LockOutlinedIcon />
-        </Avatar>{" "}
+        </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
-        </Typography>{" "}
+        </Typography>
         <Grid
           container
           sx={{
@@ -115,14 +115,14 @@ const Login = (props) => {
               color="white"
               onClick={signInWithFb}
             >
-              Sign in with{" "}
+              Sign in with
               <FacebookIcon
                 sx={{
                   ml: 2,
                 }}
-              />{" "}
-            </Button>{" "}
-          </Grid>{" "}
+              />
+            </Button>
+          </Grid>
           <Grid item>
             <Button
               sx={{
@@ -135,15 +135,15 @@ const Login = (props) => {
               color="white"
               onClick={signInWithGoogle}
             >
-              Sign in with{" "}
+              Sign in with
               <GoogleIcon
                 sx={{
                   ml: 2,
                 }}
-              />{" "}
-            </Button>{" "}
-          </Grid>{" "}
-        </Grid>{" "}
+              />
+            </Button>
+          </Grid>
+        </Grid>
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -185,24 +185,24 @@ const Login = (props) => {
               mb: 2,
             }}
           >
-            Sign In{" "}
-          </Button>{" "}
+            Sign In
+          </Button>
           <Grid container>
             <Grid item xs>
               <Link to={"/forgot-password"}>
-                <Typography variant="body2"> Forgot password ? </Typography>{" "}
-              </Link>{" "}
-            </Grid>{" "}
+                <Typography variant="body2"> Forgot password ? </Typography>
+              </Link>
+            </Grid>
             <Grid item>
               <Link to={"/signup"}>
                 <Typography variant="body2">
-                  Don 't have an account? Sign up{" "}
-                </Typography>{" "}
-              </Link>{" "}
-            </Grid>{" "}
-          </Grid>{" "}
-        </Box>{" "}
-      </Box>{" "}
+                  Don 't have an account? Sign up
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
     </Container>
   );
 };

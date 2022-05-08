@@ -15,7 +15,6 @@ const AppTopBar = (props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
-    console.log("p " + props.drawerWidth);
     setMobileOpen(!mobileOpen);
   };
 
