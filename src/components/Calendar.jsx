@@ -5,16 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useNavigate } from "react-router-dom";
-import { INITIAL_EVENTS, createEventId, getAppointments } from "./event-utils";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  TextField,
-  DialogActions,
-  Button,
-} from "@mui/material";
+import { createEventId, getAppointments } from "../helpers/AppointmentsHelper";
 
 const Calendar = () => {
   const [weekendsVisible, setWeekendsVisible] = useState(true);
@@ -33,8 +24,6 @@ const Calendar = () => {
     const loadAppointments = async () => {
       let appointments = await getAppointments();
       setInitialAppointments(appointments);
-      console.log("initial");
-      await console.log(initialAppointments);
     };
     loadAppointments();
   }, []);
@@ -92,39 +81,17 @@ const Calendar = () => {
         selectMirror={true}
         dayMaxEvents={true}
         weekends={weekendsVisible}
-        events={initialAppointments} // alternatively, use the `events` setting to fetch from a feed
+        events={initialAppointments}
         select={handleDateSelect}
-        eventContent={renderEventContent} // custom render function
+        eventContent={renderEventContent}
         eventClick={handleEventClick}
-        eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+        eventsSet={handleEvents} // called after appointments are initialized/added/changed/removed
         /* you can update a remote database when these fire:
             eventAdd={function(){}}
             eventChange={function(){}}
             eventRemove={function(){}}
             */
       />
-      {/*<Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
-        </DialogActions>
-    </Dialog>*/}
     </div>
   );
 };
