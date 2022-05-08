@@ -61,6 +61,7 @@ function signInGoogle(){
 
 function logout() {
     return signOut(auth).then(() => {
+        localStorage.clear()
         return true
     }). catch((error) => {
         return {
@@ -147,5 +148,9 @@ function getPrescriptions(patient, uid){
         )
 }
 
+function updatePrescription(patient, prescription, data){
+    setDoc(doc(db, collections.patients+'/'+patient+'/'+collections.prescriptions, prescription), data, { merge: true })
+}
+
 export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, 
-    getUsersAppointmentsOnDay, addPrescription, getPrescriptions, getAllPatients }
+    getUsersAppointmentsOnDay, addPrescription, getPrescriptions, getAllPatients, updatePrescription }
