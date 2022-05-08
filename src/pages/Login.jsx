@@ -10,12 +10,43 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { signInGoogle, signInEmail, registerDataSubmit } from "../firebase";
 
-const Login = () => {
+const Login = (props) => {
+  const navigate = useNavigate()
+  const loginRedirect = (userID) => {
+    localStorage.setItem("userID", userID)
+    navigate("/calendar", {replace: true})
+  }
+  
+  const loginError = () => {
+  
+  }
+
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const onChangeEmail = (e) => {
+    const username = e.target.value;
+    setEmail(username);
+    
+  }
+
+  const onChangePassword = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    //TO DO
+    signInEmail(email, password).then(result => {
+      if(result.errorCode===undefined){
+          loginRedirect(result.uid)
+      }
+      else{
+          loginError()
+      }
+    })
     console.log("login form send");
   };
 
@@ -25,8 +56,15 @@ const Login = () => {
   };
 
   const signInWithGoogle = () => {
-    //TO DO
-    console.log("signInWithGoogle clicked");
+    signInGoogle().then(result => {
+      if(result.errorCode===undefined){
+        registerDataSubmit(result.user.displayName, result.user.email, result.user.phoneNumber, result.user.uid, null)
+        loginRedirect(result.user.uid)
+    }
+    else{
+        loginError()
+    }
+    })
   };
 
   return (
@@ -89,6 +127,8 @@ const Login = () => {
             label="Email Address"
             name="email"
             autoComplete="email"
+            value={email}
+            onChange={onChangeEmail}
             autoFocus
           />
           <TextField
@@ -99,6 +139,8 @@ const Login = () => {
             label="Password"
             type="password"
             id="password"
+            value={password}
+            onChange={onChangePassword}
             autoComplete="current-password"
           />
           <Button

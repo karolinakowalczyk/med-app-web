@@ -1,8 +1,13 @@
 import React from "react";
 import { Typography } from "@mui/material/";
 import { Box } from "@mui/material";
+import { getUser, getPatient, getUsersAppointmentsOnDay } from "../firebase";
 
 const CalendarPage = (props) => {
+  let userID = localStorage.getItem("userID")
+  console.log(userID)
+  //getUser(userID).then(result => console.log(result))
+  getUsersAppointmentsOnDay(userID, '04-05-2022').then(result => result.forEach((doc) => console.log(doc)))
   return (
     <Box
       component="main"
