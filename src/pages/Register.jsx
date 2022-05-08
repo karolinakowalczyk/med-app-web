@@ -14,7 +14,9 @@ import { registerDataSubmit, signUpEmail } from "../firebase";
 const Register = () => {
   const navigate = useNavigate();
   const loginRedirect = () => {
-    navigate("/signin", { replace: true });
+    navigate("/signin", {
+      replace: true,
+    });
   };
 
   const loginError = () => {};
@@ -54,7 +56,7 @@ const Register = () => {
     event.preventDefault();
     signUpEmail(email, password).then((result) => {
       if (result.errorCode === undefined) {
-        registerDataSubmit(fname + " " + lname, phone, email, result.uid, null);
+        registerDataSubmit(fname + " " + lname, email, phone, result.uid, null);
         loginRedirect();
       } else {
         loginError();
@@ -76,13 +78,25 @@ const Register = () => {
           p: 1,
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar
+          sx={{
+            m: 1,
+            bgcolor: "secondary.main",
+          }}
+        >
           <LockOutlinedIcon />
-        </Avatar>
+        </Avatar>{" "}
         <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          Sign up{" "}
+        </Typography>{" "}
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{
+            mt: 3,
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -96,7 +110,7 @@ const Register = () => {
                 onChange={onChangeFname}
                 autoFocus
               />
-            </Grid>
+            </Grid>{" "}
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -108,7 +122,7 @@ const Register = () => {
                 onChange={onChangeLname}
                 autoComplete="family-name"
               />
-            </Grid>
+            </Grid>{" "}
             <Grid item xs={12}>
               <TextField
                 required
@@ -119,8 +133,8 @@ const Register = () => {
                 autoComplete="phone"
                 value={phone}
                 onChange={onChangePhone}
-              />
-            </Grid>
+              />{" "}
+            </Grid>{" "}
             <Grid item xs={12}>
               <TextField
                 required
@@ -131,8 +145,8 @@ const Register = () => {
                 autoComplete="email"
                 value={email}
                 onChange={onChangeEmail}
-              />
-            </Grid>
+              />{" "}
+            </Grid>{" "}
             <Grid item xs={12}>
               <TextField
                 required
@@ -145,27 +159,30 @@ const Register = () => {
                 onChange={onChangePassword}
                 autoComplete="new-password"
               />
-            </Grid>
-          </Grid>
+            </Grid>{" "}
+          </Grid>{" "}
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+            }}
           >
-            Sign Up
-          </Button>
+            Sign Up{" "}
+          </Button>{" "}
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to={"/signin"}>
                 <Typography variant="body2">
-                  Already have an account? Sign in
-                </Typography>
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
+                  Already have an account ? Sign in
+                </Typography>{" "}
+              </Link>{" "}
+            </Grid>{" "}
+          </Grid>{" "}
+        </Box>{" "}
+      </Box>{" "}
     </Container>
   );
 };
