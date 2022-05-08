@@ -118,7 +118,21 @@ function getPatient(id){
 }
 
 function getAllPatients(uid){
-    return getByQuery(query(collection(db, collections.patients), where('doctor', '==', uid)))
+    return getDocs(collection(db, collections.patients)).then((snap) => {
+        let arr = []
+        snap.forEach((docs) => {
+            getDocs(collection(db, collections.patients+'/'+docs.id+'/'+collections.appointments)).then(result => {
+                result.forEach(elem => {
+                    getDoc(doc(db, collections.appointments+'/'+elem.data().date+'/'+collections.appointments, elem.data().id)).then(apt => {
+                        if(apt.data().doctor == uid) {
+                            arr.push(docs.data())
+                        }
+                    })
+                })
+            })
+        })
+        return arr
+    })
 }
 
 function getAppointment(id){
