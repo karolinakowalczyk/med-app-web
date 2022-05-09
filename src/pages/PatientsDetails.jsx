@@ -9,11 +9,13 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import { getPatient } from "../firebase";
+import { addPrescription, getPatient } from "../firebase";
 import SaveIcon from "@mui/icons-material/Save";
+import { getFormattedDate } from "../helpers/AppointmentsHelper";
 
 const PatientsDetails = (props) => {
   const [prescriptionCode, setPrescriptionCode] = useState("");
+  const [recommendations, setRecommendations] = useState("");
   let { id } = useParams();
   const [patientName, setPatientName] = useState("");
 
@@ -29,15 +31,21 @@ const PatientsDetails = (props) => {
     loadPatient();
   }, []);
 
+  const onChangeRecommendations = (e) => {
+    const recomandations = e.target.value;
+    setRecommendations(recomandations);
+  };
   //console.log("PAT" + currentPatient);
   const onChangePrescriptionCode = (e) => {
     const prescriptionCode = e.target.value;
     setPrescriptionCode(prescriptionCode);
   };
   const saveRecommandations = () => {
-    //TO DO
-    console.log("recomandations saved!");
+    //todo
   };
+  const saveChanges = () => {
+    addPrescription(id, getFormattedDate(new Date(Date.now())), localStorage.getItem('userID'), {'recommendations': recommendations}, false, prescriptionCode)
+  }
   return (
     <Box
       component="main"
@@ -69,11 +77,16 @@ const PatientsDetails = (props) => {
         minRows={10}
         placeholder="Recommendations for patient"
         style={{ width: "99.3%" }}
+        onChange={onChangeRecommendations}
+        value={recommendations}
       />
 
       <Grid container>
         <Grid item xs>
-          <Button type="submit" variant="contained">
+          <Button type="submit"
+            variant="contained"
+            onClick={saveChanges}
+          >
             Save changes
           </Button>
         </Grid>
