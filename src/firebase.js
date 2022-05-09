@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs, addDoc } from 'firebase/firestore/lite'
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signOut, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
-import { CoPresent } from '@mui/icons-material'
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signOut, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
+import { AspectRatio, CoPresent } from '@mui/icons-material'
 
 const collections = {
     doctors: "doctors",
@@ -57,6 +57,10 @@ function signInProvider(provider){
 
 function signInGoogle(){
     return signInProvider(GoogleAuthProvider)
+}
+
+function signInFacebook(){
+    return signInProvider(FacebookAuthProvider)
 }
 
 function logout() {
@@ -118,7 +122,21 @@ function getPatient(id){
 }
 
 function getAllPatients(uid){
-    return getByQuery(query(collection(db, collections.patients), where('doctor', '==', uid)))
+    return getDocs(collection(db, collections.patients)).then((snap) => {
+        let arr = []
+        snap.forEach((docs) => {
+            getDocs(collection(db, collections.patients+'/'+docs.id+'/'+collections.appointments)).then(result => {
+                result.forEach(elem => {
+                    getDoc(doc(db, collections.appointments+'/'+elem.data().date+'/'+collections.appointments, elem.data().id)).then(apt => {
+                        if(apt.data().doctor == uid) {
+                            arr.push(docs.data())
+                        }
+                    })
+                })
+            })
+        })
+        return arr
+    })
 }
 
 function getAppointment(id){
@@ -128,6 +146,22 @@ function getAppointment(id){
 function getUsersAppointmentsOnDay(uid, date){
     const q = query(collection(db, collections.appointments+'/'+date+'/'+collections.appointments), where("doctor", '==', uid))
     return getByQuery(q)
+}
+
+function getFormattedDate(date){
+    return date.getDate().toString().padStart(2, '0')+'-'+(date.getMonth()+1).toString().padStart(2, '0')+'-'+date.getFullYear()
+}
+
+async function getUsersAppointmentsBetween(uid, start, end){
+    let result = {}
+    for(var d = start; d <= end; d.setDate(d.getDate() + 1)){
+        let apps = await getUsersAppointmentsOnDay(uid, getFormattedDate(start))
+        result[getFormattedDate(start)] = apps
+        
+    }
+    console.log("Appointments between dates")
+    console.log(result)
+    return result
 }
 
 function addPrescription(patient, date, uid, medicines, done){
@@ -153,4 +187,4 @@ function updatePrescription(patient, prescription, data){
 }
 
 export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, 
-    getUsersAppointmentsOnDay, addPrescription, getPrescriptions, getAllPatients, updatePrescription }
+    getUsersAppointmentsOnDay, getUsersAppointmentsBetween, addPrescription, getPrescriptions, getAllPatients, updatePrescription, signInFacebook }

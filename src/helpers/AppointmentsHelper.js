@@ -7,7 +7,7 @@ import {
 
 let eventGuid = 0
 let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
-
+const date = new Date()
 
 export const INITIAL_EVENTS = [{
         id: createEventId(),
@@ -22,13 +22,19 @@ export const INITIAL_EVENTS = [{
     }
 ]
 
+function getFormattedDate(){
+    return date.getDate().toString().padStart(2, '0')+'-'+(date.getMonth()+1).toString().padStart(2, '0')+'-'+date.getFullYear()
+}
+
 export const getAppointments = async () => {
     //console.log(INITIAL_EVENTS)
     let initialAppointments = [];
     let userID = localStorage.getItem("userID");
     // console.log(userID);
     // getUser(userID).then(result => console.log(result))
-    await getUsersAppointmentsOnDay("akRU3kHoRLdpqXh3TGCDcDoVuMw1", "08-05-2022").then((result) => {
+    //console.log(userID)
+    //console.log(getFormattedDate())
+    await getUsersAppointmentsOnDay(userID, getFormattedDate()).then((result) => {
         console.log("ccc")
         result.forEach((doc) => console.log(doc))
 
@@ -43,8 +49,8 @@ export const getAppointments = async () => {
             })
         })
     });
-    console.log('init')
-    console.log(initialAppointments);
+    //console.log('init')
+    //console.log(initialAppointments);
     return initialAppointments;
 }
 
