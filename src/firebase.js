@@ -26,7 +26,6 @@ import {
     CoPresent
 } from '@mui/icons-material'
 
-
 const collections = {
     doctors: "doctors",
     patients: 'patients',
@@ -145,20 +144,28 @@ function getPatient(id) {
     return getDocById(collections.patients, id)
 }
 
-function getAllPatients(uid) {
-    return getDocs(collection(db, collections.patients)).then((snap) => {
+async function getAllPatients(uid) {
+    return await getDocs(collection(db, collections.patients)).then(async (snap) => {
         let arr = []
+        let docdoc = []
         snap.forEach((docs) => {
-            getDocs(collection(db, collections.patients + '/' + docs.id + '/' + collections.appointments)).then(result => {
-                result.forEach(elem => {
-                    getDoc(doc(db, collections.appointments + '/' + elem.data().date + '/' + collections.appointments, elem.data().id)).then(apt => {
-                        if (apt.data().doctor == uid) {
-                            arr.push(docs.data())
-                        }
-                    })
-                })
-            })
+            docdoc.push(docs)
         })
+        for (const docs of docdoc) {
+            let result = await getDocs(collection(db, collections.patients + '/' + docs.id + '/' + collections.appointments))
+            let resres = []
+            result.forEach((res) => {
+                resres.push(res)
+            })
+            for (const elem of resres) {
+                let apt = await getDoc(doc(db, collections.appointments + '/' + elem.data().date + '/' + collections.appointments, elem.data().id))
+                if (apt.data().doctor == uid) {
+                    let dat = docs.data()
+                    dat['id'] = docs.id
+                    arr.push(dat)
+                }
+            }
+        }
         return arr
     })
 }
@@ -179,12 +186,11 @@ function getFormattedDate(date) {
 async function getUsersAppointmentsBetween(uid, start, end) {
     let result = {}
     for (var d = start; d < end; d.setDate(d.getDate() + 1)) {
+
         let apps = await getUsersAppointmentsOnDay(uid, getFormattedDate(start))
         result[getFormattedDate(start)] = apps
 
     }
-    console.log("Appointments between dates")
-    console.log(result)
     return result
 }
 
