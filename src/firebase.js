@@ -171,12 +171,13 @@ async function getUsersAppointmentsBetween(uid, start, end){
     return result
 }
 
-function addPrescription(patient, date, uid, medicines, done){
+function addPrescription(patient, date, uid, medicines, done, number){
     addDoc(collection(db, collections.patients+'/'+patient+'/'+collections.prescriptions), {
         "done": done,
         "date": date,
         "doctor": uid,
-        "medicines": medicines
+        "medicines": medicines,
+        "number": number
     })
 }
 
