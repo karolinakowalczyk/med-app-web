@@ -14,11 +14,7 @@ import {
 import { getAllPatients } from "../firebase";
 import { visuallyHidden } from "@mui/utils";
 import PropTypes from "prop-types";
-import {
-  descendingComparator,
-  getComparator,
-  stableSort,
-} from "../helpers/PatientsTableHelper";
+import { getComparator, stableSort } from "../helpers/PatientsTableHelper";
 
 const headCells = [
   {
@@ -81,7 +77,6 @@ const PatientsTable = (props) => {
   const [patientsList, setPatientsList] = useState([]);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("calories");
-  const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
