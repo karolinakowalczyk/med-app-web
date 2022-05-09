@@ -7,7 +7,7 @@ import {
 
 let eventGuid = 0
 let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
-
+const date = new Date()
 
 export const INITIAL_EVENTS = [{
         id: createEventId(),
@@ -29,6 +29,7 @@ export const getAppointments = async (date) => {
 
     await getUsersAppointmentsOnDay(userID, date).then((result) => {
         //result.forEach((doc) => console.log(doc))
+
 
         result.forEach((doc) => {
             //console.log(doc.date.split("-").reverse().join("-") + "T" + doc.hour + ":00")
