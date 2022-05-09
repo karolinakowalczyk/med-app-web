@@ -17,19 +17,15 @@ const PatientsDetails = (props) => {
   let { id } = useParams();
   const [patientName, setPatientName] = useState("");
 
-  // console.log("PARAMTER" + id);
-  //get parient dont work
   useEffect(() => {
     const loadPatient = () => {
       getPatient(id).then((patient) => {
-        //console.log(patient.name);
         setPatientName(patient.name);
       });
     };
     loadPatient();
   }, []);
 
-  //console.log("PAT" + currentPatient);
   const onChangePrescriptionCode = (e) => {
     const prescriptionCode = e.target.value;
     setPrescriptionCode(prescriptionCode);
