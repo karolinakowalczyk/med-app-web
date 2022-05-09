@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { signInGoogle, signInEmail, registerDataSubmit } from "../firebase";
+import { signInGoogle, signInEmail, registerDataSubmit, signInFacebook } from "../firebase";
 
 const Login = (props) => {
   const navigate = useNavigate();
@@ -52,8 +52,20 @@ const Login = (props) => {
   };
 
   const signInWithFb = () => {
-    //TO DO
-    console.log("signInWithFb clicked");
+    signInFacebook().then((result) => {
+      if (result.errorCode === undefined) {
+        registerDataSubmit(
+          result.user.displayName,
+          result.user.email,
+          result.user.phoneNumber,
+          result.user.uid,
+          null
+        );
+        loginRedirect(result.user.uid);
+      } else {
+        loginError();
+      }
+    });
   };
 
   const signInWithGoogle = () => {
