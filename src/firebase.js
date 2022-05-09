@@ -1,7 +1,31 @@
-import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs, addDoc } from 'firebase/firestore/lite'
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signOut, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
-import { AspectRatio, CoPresent } from '@mui/icons-material'
+import {
+    initializeApp
+} from 'firebase/app'
+import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc,
+    query,
+    collection,
+    where,
+    getDocs,
+    addDoc
+} from 'firebase/firestore/lite'
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    FacebookAuthProvider,
+    signOut,
+    signInWithPopup,
+    createUserWithEmailAndPassword
+} from "firebase/auth"
+import {
+    AspectRatio,
+    CoPresent
+} from '@mui/icons-material'
+
 
 const collections = {
     doctors: "doctors",
@@ -18,8 +42,8 @@ const firebaseConfig = {
     messagingSenderId: "728472434992",
     appId: "1:728472434992:web:9aec69f20afa2f4864b0f5",
     measurementId: "G-KJBX68BYK5"
-  }
-  
+}
+
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
@@ -37,7 +61,7 @@ function signInEmail(email, password) {
     })
 }
 
-function signInProvider(provider){
+function signInProvider(provider) {
     const providerObj = new provider()
     return signInWithPopup(auth, providerObj).then((result) => {
         return {
@@ -55,11 +79,11 @@ function signInProvider(provider){
     })
 }
 
-function signInGoogle(){
+function signInGoogle() {
     return signInProvider(GoogleAuthProvider)
 }
 
-function signInFacebook(){
+function signInFacebook() {
     return signInProvider(FacebookAuthProvider)
 }
 
@@ -67,7 +91,7 @@ function logout() {
     return signOut(auth).then(() => {
         localStorage.clear()
         return true
-    }). catch((error) => {
+    }).catch((error) => {
         return {
             errorCode: error.code,
             errorMessage: error.message
@@ -82,13 +106,13 @@ function signUpEmail(email, password) {
         })
         .catch((error) => {
             return {
-            errorCode: error.code,
-            errorMessage: error.message
+                errorCode: error.code,
+                errorMessage: error.message
             }
         });
 }
 
-function registerDataSubmit(name, email, phone, uid, data){
+function registerDataSubmit(name, email, phone, uid, data) {
     setDoc(doc(db, collections.doctors, uid), {
         "name": name,
         "email": email,
@@ -96,14 +120,14 @@ function registerDataSubmit(name, email, phone, uid, data){
     })
 }
 
-function getDocById(col, id){
-    return getDoc(doc(db, col, id)).then(result =>{
-        if(result.exists()) return result.data()
+function getDocById(col, id) {
+    return getDoc(doc(db, col, id)).then(result => {
+        if (result.exists()) return result.data()
         else return undefined
     })
 }
 
-async function getByQuery(q){
+async function getByQuery(q) {
     return getDocs(q).then(snap => {
         let result = []
         snap.forEach((doc) => {
@@ -113,22 +137,22 @@ async function getByQuery(q){
     })
 }
 
-function getUser(uid){
+function getUser(uid) {
     return getDocById(collections.doctors, uid)
 }
 
-function getPatient(id){
+function getPatient(id) {
     return getDocById(collections.patients, id)
 }
 
-function getAllPatients(uid){
+function getAllPatients(uid) {
     return getDocs(collection(db, collections.patients)).then((snap) => {
         let arr = []
         snap.forEach((docs) => {
-            getDocs(collection(db, collections.patients+'/'+docs.id+'/'+collections.appointments)).then(result => {
+            getDocs(collection(db, collections.patients + '/' + docs.id + '/' + collections.appointments)).then(result => {
                 result.forEach(elem => {
-                    getDoc(doc(db, collections.appointments+'/'+elem.data().date+'/'+collections.appointments, elem.data().id)).then(apt => {
-                        if(apt.data().doctor == uid) {
+                    getDoc(doc(db, collections.appointments + '/' + elem.data().date + '/' + collections.appointments, elem.data().id)).then(apt => {
+                        if (apt.data().doctor == uid) {
                             arr.push(docs.data())
                         }
                     })
@@ -139,33 +163,33 @@ function getAllPatients(uid){
     })
 }
 
-function getAppointment(id){
+function getAppointment(id) {
     return getDocById(collections.appointments, id)
 }
 
-function getUsersAppointmentsOnDay(uid, date){
-    const q = query(collection(db, collections.appointments+'/'+date+'/'+collections.appointments), where("doctor", '==', uid))
+function getUsersAppointmentsOnDay(uid, date) {
+    const q = query(collection(db, collections.appointments + '/' + date + '/' + collections.appointments), where("doctor", '==', uid))
     return getByQuery(q)
 }
 
-function getFormattedDate(date){
-    return date.getDate().toString().padStart(2, '0')+'-'+(date.getMonth()+1).toString().padStart(2, '0')+'-'+date.getFullYear()
+function getFormattedDate(date) {
+    return date.getDate().toString().padStart(2, '0') + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getFullYear()
 }
 
-async function getUsersAppointmentsBetween(uid, start, end){
+async function getUsersAppointmentsBetween(uid, start, end) {
     let result = {}
-    for(var d = start; d <= end; d.setDate(d.getDate() + 1)){
+    for (var d = start; d < end; d.setDate(d.getDate() + 1)) {
         let apps = await getUsersAppointmentsOnDay(uid, getFormattedDate(start))
         result[getFormattedDate(start)] = apps
-        
+
     }
     console.log("Appointments between dates")
     console.log(result)
     return result
 }
 
-function addPrescription(patient, date, uid, medicines, done){
-    addDoc(collection(db, collections.patients+'/'+patient+'/'+collections.prescriptions), {
+function addPrescription(patient, date, uid, medicines, done) {
+    addDoc(collection(db, collections.patients + '/' + patient + '/' + collections.prescriptions), {
         "done": done,
         "date": date,
         "doctor": uid,
@@ -173,18 +197,34 @@ function addPrescription(patient, date, uid, medicines, done){
     })
 }
 
-function getPrescriptions(patient, uid){
+function getPrescriptions(patient, uid) {
     return getByQuery(
         query(
             collection(db, collections.patients + '/' + patient + '/' + collections.prescriptions),
             where('doctor', '==', uid)
-            )
         )
+    )
 }
 
-function updatePrescription(patient, prescription, data){
-    setDoc(doc(db, collections.patients+'/'+patient+'/'+collections.prescriptions, prescription), data, { merge: true })
+function updatePrescription(patient, prescription, data) {
+    setDoc(doc(db, collections.patients + '/' + patient + '/' + collections.prescriptions, prescription), data, {
+        merge: true
+    })
 }
 
-export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, 
-    getUsersAppointmentsOnDay, getUsersAppointmentsBetween, addPrescription, getPrescriptions, getAllPatients, updatePrescription, signInFacebook }
+export {
+    signInGoogle,
+    signInEmail,
+    logout,
+    signUpEmail,
+    registerDataSubmit,
+    getUser,
+    getPatient,
+    getUsersAppointmentsOnDay,
+    getUsersAppointmentsBetween,
+    addPrescription,
+    getPrescriptions,
+    getAllPatients,
+    updatePrescription,
+    signInFacebook
+}
