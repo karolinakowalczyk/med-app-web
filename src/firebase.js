@@ -166,8 +166,6 @@ async function getUsersAppointmentsBetween(uid, start, end){
         result[getFormattedDate(start)] = apps
         
     }
-    console.log("Appointments between dates")
-    console.log(result)
     return result
 }
 
