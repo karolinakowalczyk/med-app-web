@@ -9,7 +9,7 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import { addPrescription, getPatient } from "../firebase";
+import { addPrescription, getPatient, getPrescriptions } from "../firebase";
 import SaveIcon from "@mui/icons-material/Save";
 import { getFormattedDate } from "../helpers/AppointmentsHelper";
 
@@ -27,6 +27,13 @@ const PatientsDetails = (props) => {
         //console.log(patient.name);
         setPatientName(patient.name);
       });
+      // getPrescriptions(id, localStorage.getItem('userID')).then(result => {
+      //   console.log(result)
+      //   if(result.length > 0){
+      //     setPrescriptionCode(result[0].number)
+      //     setRecommendations(result[0].recomandations)
+      //   }
+      // })
     };
     loadPatient();
   }, []);
