@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -15,10 +15,21 @@ import SaveIcon from "@mui/icons-material/Save";
 const PatientsDetails = (props) => {
   const [prescriptionCode, setPrescriptionCode] = useState("");
   let { id } = useParams();
-  console.log("PARAMTER" + id);
+  const [patientName, setPatientName] = useState("");
+
+  // console.log("PARAMTER" + id);
   //get parient dont work
-  let currentPatient = getPatient("iDIhspVovGeQUPqg2kleDXf2oe22");
-  console.log("PAT" + currentPatient.name);
+  useEffect(() => {
+    const loadPatient = () => {
+      getPatient(id).then((patient) => {
+        //console.log(patient.name);
+        setPatientName(patient.name);
+      });
+    };
+    loadPatient();
+  }, []);
+
+  //console.log("PAT" + currentPatient);
   const onChangePrescriptionCode = (e) => {
     const prescriptionCode = e.target.value;
     setPrescriptionCode(prescriptionCode);
@@ -38,7 +49,7 @@ const PatientsDetails = (props) => {
       }}
     >
       <Typography component="h1" variant="h5">
-        Patient XYZ
+        Patient {patientName}
       </Typography>
       <TextField
         margin="normal"

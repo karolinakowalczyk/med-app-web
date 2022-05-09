@@ -5,7 +5,11 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useNavigate } from "react-router-dom";
-import { createEventId, getAppointments } from "../helpers/AppointmentsHelper";
+import {
+  createEventId,
+  getAppointments,
+  getFormattedDate,
+} from "../helpers/AppointmentsHelper";
 
 const Calendar = () => {
   const [weekendsVisible, setWeekendsVisible] = useState(true);
@@ -20,13 +24,13 @@ const Calendar = () => {
     setOpen(false);
   };*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     const loadAppointments = async () => {
       let appointments = await getAppointments();
       setInitialAppointments(appointments);
     };
     loadAppointments();
-  }, []);
+  }, []);*/
 
   const handleDateSelect = (selectInfo) => {
     console.log("add appointment");
@@ -50,8 +54,7 @@ const Calendar = () => {
   const renderEventContent = (eventInfo) => {
     return (
       <div>
-        <b>{eventInfo.timeText}</b>
-        <i>{eventInfo.event.title}</i>
+        <b> {eventInfo.timeText} </b> <i> {eventInfo.event.title} </i>{" "}
       </div>
     );
   };
@@ -75,6 +78,18 @@ const Calendar = () => {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
+        datesSet={(arg) => {
+          //console.log("******");
+          //console.log(arg);
+          //arg includes data about current visible dates
+          //console.log(arg.start); //starting visible date
+          //console.log(arg.end); //ending visible date
+          let date = getFormattedDate(arg.start);
+          //console.log(date);
+          getAppointments(date).then((appointments) =>
+            setInitialAppointments(appointments)
+          );
+        }}
         initialView="timeGridDay"
         editable={true}
         selectable={true}
@@ -82,16 +97,16 @@ const Calendar = () => {
         dayMaxEvents={true}
         weekends={weekendsVisible}
         events={initialAppointments}
-        select={handleDateSelect}
+        //select={handleDateSelect}
         eventContent={renderEventContent}
         eventClick={handleEventClick}
         eventsSet={handleEvents} // called after appointments are initialized/added/changed/removed
         /* you can update a remote database when these fire:
-            eventAdd={function(){}}
-            eventChange={function(){}}
-            eventRemove={function(){}}
-            */
-      />
+        eventAdd={function(){}}
+        eventChange={function(){}}
+        eventRemove={function(){}}
+        */
+      />{" "}
     </div>
   );
 };
