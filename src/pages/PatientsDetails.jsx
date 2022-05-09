@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -18,6 +18,7 @@ const PatientsDetails = (props) => {
   const [recommendations, setRecommendations] = useState("");
   let { id } = useParams();
   const [patientName, setPatientName] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadPatient = () => {
@@ -39,7 +40,6 @@ const PatientsDetails = (props) => {
     const recomandations = e.target.value;
     setRecommendations(recomandations);
   };
-  //console.log("PAT" + currentPatient);
   const onChangePrescriptionCode = (e) => {
     const prescriptionCode = e.target.value;
     setPrescriptionCode(prescriptionCode);
@@ -48,8 +48,19 @@ const PatientsDetails = (props) => {
     //todo
   };
   const saveChanges = () => {
-    addPrescription(id, getFormattedDate(new Date(Date.now())), localStorage.getItem('userID'), {'recommendations': recommendations}, false, prescriptionCode)
-  }
+    addPrescription(
+      id,
+      getFormattedDate(new Date(Date.now())),
+      localStorage.getItem("userID"),
+      { recommendations: recommendations },
+      false,
+      prescriptionCode
+    );
+    navigate("/calendar", {
+      replace: true,
+    });
+    window.location.reload(false);
+  };
   return (
     <Box
       component="main"
@@ -87,10 +98,7 @@ const PatientsDetails = (props) => {
 
       <Grid container>
         <Grid item xs>
-          <Button type="submit"
-            variant="contained"
-            onClick={saveChanges}
-          >
+          <Button type="submit" variant="contained" onClick={saveChanges}>
             Save changes
           </Button>
         </Grid>
