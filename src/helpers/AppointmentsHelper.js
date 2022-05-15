@@ -1,49 +1,30 @@
 import {
-    getUser,
-    getPatient,
-    getUsersAppointmentsOnDay,
-    updatePrescription,
+    getUsersAppointmentsBetween
 } from "../firebase";
 
 let eventGuid = 0
-let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
-const date = new Date()
 
-export const INITIAL_EVENTS = [{
-        id: createEventId(),
-        title: 'All-day event',
-        start: todayStr
-    },
-    {
-        id: createEventId(),
-        title: 'Timed event',
-        start: todayStr + 'T12:00:00',
-        end: todayStr + 'T13:30:00',
-    }
-]
+export const getAppointments = async (userID, dateStart, dateEnd) => {
 
-export const getAppointments = async (date) => {
-    //console.log(INITIAL_EVENTS)
     let initialAppointments = [];
-    let userID = localStorage.getItem("userID");
+    let start = new Date(dateStart);
+    let end = new Date(dateEnd);
 
-    await getUsersAppointmentsOnDay(userID, date).then((result) => {
-        //result.forEach((doc) => console.log(doc))
+    let result = await getUsersAppointmentsBetween(userID, dateStart, dateEnd);
 
-
-        result.forEach((doc) => {
-            //console.log(doc.date.split("-").reverse().join("-") + "T" + doc.hour + ":00")
+    for (var d = start; d < end; d.setDate(d.getDate() + 1)) {
+        let arr = result[getFormattedDate(d)]
+        arr.forEach((doc) => {
             initialAppointments.push({
                 id: createEventId(),
                 title: doc.title + ' ' + doc.patientName,
                 start: doc.date.split("-").reverse().join("-") + "T" + doc.hour + ":00",
+                end: doc.date.split("-").reverse().join("-") + "T" + doc.endHour + ":00",
                 patientId: doc.patient
-                //end: todayStr + 'T01:00:00',
             })
         })
-    });
-    //console.log('init')
-    //console.log(initialAppointments);
+
+    }
     return initialAppointments;
 }
 
@@ -52,6 +33,5 @@ export function createEventId() {
 }
 
 export function getFormattedDate(date) {
-    console.log(date)
     return date.getDate().toString().padStart(2, '0') + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getFullYear()
 }

@@ -160,13 +160,12 @@ function getFormattedDate(date){
 
 async function getUsersAppointmentsBetween(uid, start, end){
     let result = {}
-    for(var d = start; d < end; d.setDate(d.getDate() + 1)){
+    for (var d = start; d < end; d.setDate(d.getDate() + 1)) {
+
         let apps = await getUsersAppointmentsOnDay(uid, getFormattedDate(start))
         result[getFormattedDate(start)] = apps
         
     }
-    console.log("Appointments between dates")
-    console.log(result)
     return result
 }
 
