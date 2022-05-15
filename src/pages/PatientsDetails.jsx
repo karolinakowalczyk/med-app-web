@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -12,12 +12,14 @@ import {
 import { addPrescription, getPatient, getPrescriptions } from "../firebase";
 import SaveIcon from "@mui/icons-material/Save";
 import { getFormattedDate } from "../helpers/AppointmentsHelper";
+import { PDFExport } from "@progress/kendo-react-pdf";
 
 const PatientsDetails = (props) => {
   const [prescriptionCode, setPrescriptionCode] = useState("");
   const [recommendations, setRecommendations] = useState("");
   let { id } = useParams();
   const [patientName, setPatientName] = useState("");
+  const pdfExportComponent = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,8 +46,11 @@ const PatientsDetails = (props) => {
     const prescriptionCode = e.target.value;
     setPrescriptionCode(prescriptionCode);
   };
+
   const saveRecommandations = () => {
-    //todo
+    if (pdfExportComponent.current) {
+      pdfExportComponent.current.save();
+    }
   };
   const saveChanges = () => {
     addPrescription(
@@ -71,31 +76,42 @@ const PatientsDetails = (props) => {
         p: 3,
       }}
     >
-      <Typography component="h1" variant="h5">
-        Patient {patientName}
-      </Typography>
-      <TextField
-        margin="normal"
-        type="number"
-        required
-        fullWidth
-        id="prescriptionCode"
-        label="Prescription Code"
-        name="prescriptionCode"
-        autoComplete="prescription code"
-        value={prescriptionCode}
-        onChange={onChangePrescriptionCode}
-        autoFocus
-      />
-      <TextareaAutosize
-        aria-label="Recommendations"
-        minRows={10}
-        placeholder="Recommendations for patient"
-        style={{ width: "99.3%" }}
-        onChange={onChangeRecommendations}
-        value={recommendations}
-      />
-
+      <PDFExport
+        ref={pdfExportComponent}
+        paperSize="A4"
+        fileName="Prescription.pdf"
+      >
+        <Grid
+          sx={{
+            m: 3,
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Patient {patientName}
+          </Typography>
+          <TextField
+            margin="normal"
+            type="number"
+            required
+            fullWidth
+            id="prescriptionCode"
+            label="Prescription Code"
+            name="prescriptionCode"
+            autoComplete="prescription code"
+            value={prescriptionCode}
+            onChange={onChangePrescriptionCode}
+            autoFocus
+          />
+          <TextareaAutosize
+            aria-label="Recommendations"
+            minRows={10}
+            placeholder="Recommendations for patient"
+            style={{ width: "99.3%" }}
+            onChange={onChangeRecommendations}
+            value={recommendations}
+          />
+        </Grid>
+      </PDFExport>
       <Grid container>
         <Grid item xs>
           <Button type="submit" variant="contained" onClick={saveChanges}>
