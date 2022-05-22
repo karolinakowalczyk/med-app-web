@@ -170,6 +170,7 @@ async function getUsersAppointmentsBetween(uid, start, end){
 }
 
 function addPrescription(patient, date, uid, medicines, done, number){
+    console.log(medicines)
     addDoc(collection(db, collections.patients+'/'+patient+'/'+collections.prescriptions), {
         "done": done,
         "date": date,
