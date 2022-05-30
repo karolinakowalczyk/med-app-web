@@ -16,10 +16,10 @@ import Calendar from "../components/Calendar";
 
 const CalendarPage = (props) => {
   let userID = localStorage.getItem("userID");
-  addDoctorAppointmentCategory(userID, 30, '5as97ERlRoLXCG746eE2', "Wiertło", 100).then(() => {
-    console.log('DUPA')
-    getDoctorAppointmentCategories(userID)
-  })
+  // addDoctorAppointmentCategory(userID, 30, '5as97ERlRoLXCG746eE2', "Wiertło", 100).then(() => {
+  //   console.log('DUPA')
+  //   getDoctorAppointmentCategories(userID)
+  // })
   //console.log(userID);
   //getUser(userID).then(result => console.log(result))
   // getUsersAppointmentsOnDay(userID, "09-05-2022").then((result) =>
