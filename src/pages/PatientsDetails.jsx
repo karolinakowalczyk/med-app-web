@@ -8,19 +8,46 @@ import {
   IconButton,
   Button,
   Grid,
+  List,
+  ListItem,
 } from "@mui/material";
 import { addPrescription, getPatient, getPrescriptions } from "../firebase";
 import SaveIcon from "@mui/icons-material/Save";
 import { getFormattedDate } from "../helpers/AppointmentsHelper";
 import { PDFExport } from "@progress/kendo-react-pdf";
 
+let medCount = 1
+
 const PatientsDetails = (props) => {
+  let renderedList = null
+
   const [prescriptionCode, setPrescriptionCode] = useState("");
-  const [recommendations, setRecommendations] = useState("");
+  
+  const [recommendations0, setRecommendations0] = useState("")
+  const [medicine0, setMedicine0] = useState("");
+  const [recommendations1, setRecommendations1] = useState("")
+  const [medicine1, setMedicine1] = useState("");
+  const [recommendations2, setRecommendations2] = useState("")
+  const [medicine2, setMedicine2] = useState("");
+  const [recommendations3, setRecommendations3] = useState("")
+  const [medicine3, setMedicine3] = useState("");
+  const [recommendations4, setRecommendations4] = useState("")
+  const [medicine4, setMedicine4] = useState("");
+
+  const recommendations = [
+    {name: medicine0, description: recommendations0},
+    {name: medicine1, description: recommendations1},
+    {name: medicine2, description: recommendations2},
+    {name: medicine3, description: recommendations3},
+    {name: medicine4, description: recommendations4},
+  ]
+
+
   let { id } = useParams();
   const [patientName, setPatientName] = useState("");
   const pdfExportComponent = useRef(null);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const loadPatient = () => {
@@ -38,9 +65,65 @@ const PatientsDetails = (props) => {
     loadPatient();
   }, []);
 
-  const onChangeRecommendations = (e) => {
+  function addMedicineField(){
+    if(medCount < 5){
+      document.getElementsByName('Item'+medCount)[0].style.display = 'flex'
+      medCount++
+    }
+  }
+
+  function removeMedicineField(){
+    if(medCount > 0){
+      medCount--
+      document.getElementsByName('Item'+medCount)[0].style.display = 'none'
+    }
+  }
+
+  
+  const onChangeMedicine0 = (e) => {
+    const medicine = e.target.value;
+    setMedicine0(medicine);
+  };
+  const onChangeMedicine1 = (e) => {
+    const medicine = e.target.value;
+    setMedicine1(medicine);
+  };
+
+  const onChangeMedicine2 = (e) => {
+    const medicine = e.target.value;
+    setMedicine2(medicine);
+  };
+
+  const onChangeMedicine3 = (e) => {
+    const medicine = e.target.value;
+    setMedicine3(medicine);
+  };
+
+  const onChangeMedicine4 = (e) => {
+    const medicine = e.target.value;
+    setMedicine4(medicine);
+  };
+
+
+  const onChangeRecommendations0 = (e) => {
     const recomandations = e.target.value;
-    setRecommendations(recomandations);
+    setRecommendations0(recomandations);
+  };
+  const onChangeRecommendations1 = (e) => {
+    const recomandations = e.target.value;
+    setRecommendations1(recomandations);
+  };
+  const onChangeRecommendations2 = (e) => {
+    const recomandations = e.target.value;
+    setRecommendations2(recomandations);
+  };
+  const onChangeRecommendations3 = (e) => {
+    const recomandations = e.target.value;
+    setRecommendations3(recomandations);
+  };
+  const onChangeRecommendations4 = (e) => {
+    const recomandations = e.target.value;
+    setRecommendations4(recomandations);
   };
   const onChangePrescriptionCode = (e) => {
     const prescriptionCode = e.target.value;
@@ -53,18 +136,20 @@ const PatientsDetails = (props) => {
     }
   };
   const saveChanges = () => {
+    console.log(medCount)
+    console.log(recommendations, recommendations.slice(0, medCount))
     addPrescription(
       id,
       getFormattedDate(new Date(Date.now())),
       localStorage.getItem("userID"),
-      { recommendations: recommendations },
+      recommendations.slice(0, medCount),
       false,
       prescriptionCode
     );
-    navigate("/calendar", {
-      replace: true,
-    });
-    window.location.reload(false);
+    // navigate("/calendar", {
+    //   replace: true,
+    // });
+    // window.location.reload(false);
   };
   return (
     <Box
@@ -102,14 +187,121 @@ const PatientsDetails = (props) => {
             onChange={onChangePrescriptionCode}
             autoFocus
           />
-          <TextareaAutosize
-            aria-label="Recommendations"
-            minRows={10}
-            placeholder="Recommendations for patient"
-            style={{ width: "99.3%" }}
-            onChange={onChangeRecommendations}
-            value={recommendations}
-          />
+          <List medicineList
+            ref={listView => renderedList=listView}>
+            <ListItem>
+              <div style={{display: "flex", width: '99%'}}>
+                <TextareaAutosize
+                  aria-label="Medicine"
+                  minRows={2}
+                  placeholder="Medicine"
+                  style={{ width: "18%", alignSelf: 'left' }}
+                  onChange={onChangeMedicine0}
+                  value={medicine0}
+                />
+                <div style={{width: '10%'}}></div>
+                <TextareaAutosize
+                aria-label="Recommendations"
+                minRows={2}
+                placeholder="Recommendations for patient"
+                style={{ width: "75%" , alignSelf: 'right'}}
+                onChange={onChangeRecommendations0}
+                value={recommendations0}
+              />
+            </div>
+          </ListItem>
+          <ListItem>
+              <div name={'Item1'} style={{display: "none", width: '99%'}}>
+                <TextareaAutosize
+                  aria-label="Medicine"
+                  minRows={2}
+                  placeholder="Medicine"
+                  style={{ width: "18%", alignSelf: 'left' }}
+                  onChange={onChangeMedicine1}
+                  value={medicine1}
+                />
+                <div style={{width: '10%'}}></div>
+                <TextareaAutosize
+                aria-label="Recommendations"
+                minRows={2}
+                placeholder="Recommendations for patient"
+                style={{ width: "75%" , alignSelf: 'right'}}
+                onChange={onChangeRecommendations1}
+                value={recommendations1}
+              />
+            </div>
+          </ListItem>
+          <ListItem>
+            <div name={'Item2'} style={{display: "none", width: '99%'}}>
+                <TextareaAutosize
+                  aria-label="Medicine"
+                  minRows={2}
+                  placeholder="Medicine"
+                  style={{ width: "18%", alignSelf: 'left' }}
+                  onChange={onChangeMedicine2}
+                  value={medicine2}
+                />
+                <div style={{width: '10%'}}></div>
+                <TextareaAutosize
+                aria-label="Recommendations"
+                minRows={2}
+                placeholder="Recommendations for patient"
+                style={{ width: "75%" , alignSelf: 'right'}}
+                onChange={onChangeRecommendations2}
+                value={recommendations2}
+              />
+            </div>
+          </ListItem>
+          <ListItem>
+          <div name={'Item3'} style={{display: "none", width: '99%'}}>
+                <TextareaAutosize
+                  aria-label="Medicine"
+                  minRows={2}
+                  placeholder="Medicine"
+                  style={{ width: "18%", alignSelf: 'left' }}
+                  onChange={onChangeMedicine3}
+                  value={medicine3}
+                />
+                <div style={{width: '10%'}}></div>
+                <TextareaAutosize
+                aria-label="Recommendations"
+                minRows={2}
+                placeholder="Recommendations for patient"
+                style={{ width: "75%" , alignSelf: 'right'}}
+                onChange={onChangeRecommendations3}
+                value={recommendations3}
+              />
+            </div>
+          </ListItem>
+          <ListItem>
+          <div name={'Item4'} style={{display: "none", width: '99%'}}>
+                <TextareaAutosize
+                  aria-label="Medicine"
+                  minRows={2}
+                  placeholder="Medicine"
+                  style={{ width: "18%", alignSelf: 'left' }}
+                  onChange={onChangeMedicine4}
+                  value={medicine4}
+                />
+                <div style={{width: '10%'}}></div>
+                <TextareaAutosize
+                aria-label="Recommendations"
+                minRows={2}
+                placeholder="Recommendations for patient"
+                style={{ width: "75%" , alignSelf: 'right'}}
+                onChange={onChangeRecommendations4}
+                value={recommendations4}
+              />
+            </div>
+          </ListItem>
+        </List>
+        <Button variant="contained" onClick={addMedicineField}>
+            +
+          </Button>
+          
+        <Button variant="contained" onClick={removeMedicineField}>
+            -
+          </Button>
         </Grid>
       </PDFExport>
       <Grid container>
