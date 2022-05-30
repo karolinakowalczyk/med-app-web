@@ -215,11 +215,12 @@ function getDoctorAppointmentCategories(uid){
     })
 }
 
-async function addDoctorAppointmentCategory(uid, eta, categoryID, name, price){
+async function addDoctorAppointmentCategory(uid, eta, categoryID, price){
+    let category = await getDocById(collections.categories, categoryID)
     addDoc(collection(db, collections.doctors+'/'+uid+'/'+collections.categories), {
         "estimatedTime": eta,
         "id": categoryID,
-        "name": name,
+        "name": category.name,
         "price": price
     })
 }
