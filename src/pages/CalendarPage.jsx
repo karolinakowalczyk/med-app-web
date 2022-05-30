@@ -10,12 +10,14 @@ import {
   getUsersAppointmentsBetween,
   getAppointmentCategories,
   getDoctorAppointmentCategories,
-  addDoctorAppointmentCategory
+  addDoctorAppointmentCategory,
+  sortArrayBy
 } from "../firebase";
 import Calendar from "../components/Calendar";
 
 const CalendarPage = (props) => {
   let userID = localStorage.getItem("userID");
+  //console.log(sortArrayBy(test, 'dupa'))
   // addDoctorAppointmentCategory(userID, 30, '5as97ERlRoLXCG746eE2', 100).then(() => {
   //   console.log('DUPA')
   //   getDoctorAppointmentCategories(userID)

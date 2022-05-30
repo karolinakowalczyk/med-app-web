@@ -253,8 +253,16 @@ async function addDoctorAppointmentCategory(uid, eta, categoryID, price){
     })
 }
 
+function sortArrayBy(array, property){
+    return array.sort((a, b) => {
+        if(a[property] < b[property]) return -1
+        else if(a[property] > b[property]) return 1
+        else return 0
+    })
+}
+
 
 export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, 
     getUsersAppointmentsOnDay, getUsersAppointmentsBetween, addPrescription, getPrescriptions, 
     getAllPatients, updatePrescription, signInFacebook, getAppointmentCategories, getDoctorAppointmentCategories, addDoctorAppointmentCategory,
-    updateUser }
+    updateUser, sortArrayBy }
