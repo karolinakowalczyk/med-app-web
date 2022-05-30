@@ -118,11 +118,19 @@ function getUser(uid){
     return getDocById(collections.doctors, uid)
 }
 
+function updateUser(uid, name, phone, email){
+    setDoc(doc(db, collections.doctors, uid), {
+        "name": name,
+        "email": email,
+        "phone": phone
+    })
+}
+
 function getPatient(id){
     return getDocById(collections.patients, id)
 }
 
-async function getAllPatients(uid){
+async function getAllPatients(uid, filter){
     return await getDocs(collection(db, collections.patients)).then(async (snap) => {
         let arr = []
         let docdoc = []
@@ -142,7 +150,27 @@ async function getAllPatients(uid){
                 }
             }
         }
-        return arr
+
+        arr = Array.from(new Set(arr.map(a => a.id)))
+        .map(id => {
+        return arr.find(a => a.id === id)
+        })
+
+        console.log(arr)
+        if(filter){
+            let result = []
+            for (const patient of arr){
+                if (
+                    (filter.name && patient.name.includes(filter.name))&&
+                    (filter.email && patient.email.includes(filter.email))&&
+                    (filter.phone && patient.phone.includes(filter.phone))){
+                    result.push(patient)
+                    continue
+                }
+            }
+            console.log(result)
+            return result
+        } else return arr 
     })
 }
 
@@ -225,6 +253,8 @@ async function addDoctorAppointmentCategory(uid, eta, categoryID, price){
     })
 }
 
+
 export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, 
     getUsersAppointmentsOnDay, getUsersAppointmentsBetween, addPrescription, getPrescriptions, 
-    getAllPatients, updatePrescription, signInFacebook, getAppointmentCategories, getDoctorAppointmentCategories, addDoctorAppointmentCategory }
+    getAllPatients, updatePrescription, signInFacebook, getAppointmentCategories, getDoctorAppointmentCategories, addDoctorAppointmentCategory,
+    updateUser }
