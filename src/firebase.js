@@ -7,7 +7,8 @@ const collections = {
     doctors: "doctors",
     patients: 'patients',
     appointments: 'appointments',
-    prescriptions: 'prescriptions'
+    prescriptions: 'prescriptions',
+    categories: 'appointmentTypes'
 }
 
 const firebaseConfig = {
@@ -193,5 +194,36 @@ function updatePrescription(patient, prescription, data){
     setDoc(doc(db, collections.patients+'/'+patient+'/'+collections.prescriptions, prescription), data, { merge: true })
 }
 
+function getAppointmentCategories(){
+    return getDocs(collection(db, collections.categories)).then(snap => {
+        let result = []
+        snap.forEach(q => result.push({
+            id: q.id,
+            name: q.data().name
+        }))
+        console.log(result)
+        return result
+    })
+}
+
+function getDoctorAppointmentCategories(uid){
+    return getDocs(collection(db, collections.doctors+'/'+uid+'/'+collections.categories)).then( snap => {
+        let result = []
+        snap.forEach(q => result.push(q.data()))
+        console.log(result)
+        return result
+    })
+}
+
+async function addDoctorAppointmentCategory(uid, eta, categoryID, name, price){
+    addDoc(collection(db, collections.doctors+'/'+uid+'/'+collections.categories), {
+        "estimatedTime": eta,
+        "id": categoryID,
+        "name": name,
+        "price": price
+    })
+}
+
 export { signInGoogle, signInEmail, logout, signUpEmail, registerDataSubmit, getUser, getPatient, 
-    getUsersAppointmentsOnDay, getUsersAppointmentsBetween, addPrescription, getPrescriptions, getAllPatients, updatePrescription, signInFacebook }
+    getUsersAppointmentsOnDay, getUsersAppointmentsBetween, addPrescription, getPrescriptions, 
+    getAllPatients, updatePrescription, signInFacebook, getAppointmentCategories, getDoctorAppointmentCategories, addDoctorAppointmentCategory }
