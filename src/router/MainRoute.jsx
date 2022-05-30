@@ -8,6 +8,7 @@ import CalendarPage from "../pages/CalendarPage";
 import AppTopBar from "../components/AppTopBar";
 import PatientsDetails from "../pages/PatientsDetails";
 import PatientsTable from "../pages/PatientsTable";
+import Profile from "../pages/Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -33,6 +34,10 @@ const MainRoute = () => {
         <Route
           path="/patients-table"
           element={<PatientsTable drawerWidth={drawerWidth} />}
+        />
+        <Route
+          path="/account"
+          element={<Profile drawerWidth={drawerWidth} />}
         />
       </Routes>
     </BrowserRouter>
