@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material/";
-import ErrorMessage from "../components/ErrorMessage";
+import ProfileForm from "../components/ProfileForm";
 
 const Profile = (props) => {
   return (
@@ -13,7 +13,7 @@ const Profile = (props) => {
         p: 3,
       }}
     >
-      <h1>czesc</h1>
+      <ProfileForm />
     </Box>
   );
 };
