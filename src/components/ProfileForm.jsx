@@ -25,6 +25,7 @@ const ProfileForm = (props) => {
   const [docAppointmentCategories, setDocAppointmentCategories] = useState([]);
   const [actualCategories, setActualCategories] = useState([]);
   const [newAppointmentCat, setNewAppointmentCat] = useState("");
+  const [newPrice, setNewPrice] = useState(0);
   const [warningText, setWarningText] = useState("");
   const [successText, setSuccessText] = useState("");
   const [open, setOpen] = useState(false);
@@ -44,15 +45,17 @@ const ProfileForm = (props) => {
     };
     loadDoctor();
   }, []);
+
   const onChangePhone = (e) => {
     setDoctorPhone(e.target.value);
+  };
+  const onChangeNewPrice = (e) => {
+    setNewPrice(e.target.value);
   };
 
   const handleEdit = (e) => {
     e.preventDefault();
     updateUser(userID, doctorPhone);
-
-    console.log("edit form send");
     setOpen(true);
     setWarningText("");
     setSuccessText("Edit form send.");
@@ -62,16 +65,17 @@ const ProfileForm = (props) => {
   };
 
   const addCategory = () => {
-    console.log("hey" + newAppointmentCat);
-    if (newAppointmentCat) {
+    if (newPrice <= 0) {
+      setOpen(true);
+      setSuccessText("");
+      setWarningText("Provide correct price of your service.");
+    } else if (newAppointmentCat) {
       let newCat = actualCategories.find((cat) => {
         if (cat.name === newAppointmentCat) {
-          console.log(cat.id);
           return cat;
         }
         return false;
       });
-      console.log(newCat);
       let isExist = false;
       docAppointmentCategories.map((cat) => {
         if (cat.id === newCat.id) {
@@ -80,7 +84,6 @@ const ProfileForm = (props) => {
         return false;
       });
       if (isExist) {
-        console.log("this category exist, you can edit it");
         setOpen(true);
         setSuccessText("");
         setWarningText("This category exist, you can edit it.");
@@ -88,12 +91,16 @@ const ProfileForm = (props) => {
         setOpen(true);
         setWarningText("");
         setSuccessText("New category added.");
-        addDoctorAppointmentCategory(userID, newCat.name, newCat.id, 0).then(
-          () => {
-            const newList = docAppointmentCategories.concat(newCat);
-            setDocAppointmentCategories(newList);
-          }
-        );
+        Object.assign(newCat, { price: newPrice });
+        addDoctorAppointmentCategory(
+          userID,
+          newCat.name,
+          newCat.id,
+          newPrice
+        ).then(() => {
+          const newList = docAppointmentCategories.concat(newCat);
+          setDocAppointmentCategories(newList);
+        });
       }
     } else {
       setOpen(true);
@@ -149,7 +156,7 @@ const ProfileForm = (props) => {
             New Appointment Category Name
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid item sx={{ mt: 1 }}>
           <Select
             value={newAppointmentCat}
             onChange={handleNewAppointmentCat}
@@ -164,6 +171,18 @@ const ProfileForm = (props) => {
               </MenuItem>
             ))}
           </Select>
+          <TextField
+            style={{ marginRight: "1rem" }}
+            type="number"
+            required
+            id="price"
+            label="Price"
+            name="price"
+            autoComplete="price (PLN)"
+            value={newPrice}
+            onChange={onChangeNewPrice}
+            autoFocus
+          />
           <Button variant="contained" onClick={addCategory}>
             +
           </Button>

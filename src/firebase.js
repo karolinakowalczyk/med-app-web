@@ -265,7 +265,7 @@ function getDoctorAppointmentCategories(uid) {
     return getDocs(collection(db, collections.doctors + '/' + uid + '/' + collections.categories)).then(snap => {
         let result = []
         snap.forEach(q => result.push(q.data()))
-        console.log(result)
+        //console.log(result)
         return result
     })
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -11,7 +11,7 @@ import {
   List,
   ListItem,
 } from "@mui/material";
-import { addPrescription, getPatient, getPrescriptions } from "../firebase";
+import { addPrescription, getPatient } from "../firebase";
 import SaveIcon from "@mui/icons-material/Save";
 import { getFormattedDate } from "../helpers/AppointmentsHelper";
 import { PDFExport } from "@progress/kendo-react-pdf";
@@ -45,20 +45,11 @@ const PatientsDetails = (props) => {
   let { id } = useParams();
   const [patientName, setPatientName] = useState("");
   const pdfExportComponent = useRef(null);
-  const navigate = useNavigate();
-
   useEffect(() => {
     const loadPatient = () => {
       getPatient(id).then((patient) => {
         setPatientName(patient.name);
       });
-      // getPrescriptions(id, localStorage.getItem('userID')).then(result => {
-      //   console.log(result)
-      //   if(result.length > 0){
-      //     setPrescriptionCode(result[0].number)
-      //     setRecommendations(result[0].recomandations)
-      //   }
-      // })
     };
     loadPatient();
   }, []);
