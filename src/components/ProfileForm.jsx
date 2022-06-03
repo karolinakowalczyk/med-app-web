@@ -26,6 +26,7 @@ const ProfileForm = (props) => {
   const [actualCategories, setActualCategories] = useState([]);
   const [newAppointmentCat, setNewAppointmentCat] = useState("");
   const [warningText, setWarningText] = useState("");
+  const [successText, setSuccessText] = useState("");
   const [open, setOpen] = useState(false);
   const userID = localStorage.getItem("userID");
 
@@ -52,6 +53,9 @@ const ProfileForm = (props) => {
     updateUser(userID, doctorPhone);
 
     console.log("edit form send");
+    setOpen(true);
+    setWarningText("");
+    setSuccessText("Edit form send.");
   };
   const handleNewAppointmentCat = (event) => {
     setNewAppointmentCat(event.target.value);
@@ -78,9 +82,12 @@ const ProfileForm = (props) => {
       if (isExist) {
         console.log("this category exist, you can edit it");
         setOpen(true);
+        setSuccessText("");
         setWarningText("This category exist, you can edit it.");
       } else {
-        console.log("new cateogry added");
+        setOpen(true);
+        setWarningText("");
+        setSuccessText("New category added.");
         addDoctorAppointmentCategory(userID, newCat.name, newCat.id, 0).then(
           () => {
             const newList = docAppointmentCategories.concat(newCat);
@@ -89,7 +96,9 @@ const ProfileForm = (props) => {
         );
       }
     } else {
-      console.log("not category selected");
+      setOpen(true);
+      setSuccessText("");
+      setWarningText("Select category.");
     }
   };
   return (
@@ -172,7 +181,22 @@ const ProfileForm = (props) => {
         Edit
       </Button>
 
-      <Message variant="warning" text={warningText} open={open}></Message>
+      {warningText && (
+        <Message
+          variant="warning"
+          text={warningText}
+          open={open}
+          setOpen={setOpen}
+        ></Message>
+      )}
+      {successText && (
+        <Message
+          variant="success"
+          text={successText}
+          open={open}
+          setOpen={setOpen}
+        ></Message>
+      )}
     </Box>
   );
 };
