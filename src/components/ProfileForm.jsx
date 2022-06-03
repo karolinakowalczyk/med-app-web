@@ -11,7 +11,6 @@ import {
   Select,
   MenuItem,
 } from "@mui/material/";
-import ErrorMessage from "../components/ErrorMessage";
 import {
   getUser,
   updateUser,
@@ -19,13 +18,16 @@ import {
   addDoctorAppointmentCategory,
   getAppointmentCategories,
 } from "../firebase";
+import Message from "./Message";
 
 const ProfileForm = (props) => {
   const [doctorPhone, setDoctorPhone] = useState("");
   const [docAppointmentCategories, setDocAppointmentCategories] = useState([]);
   const [actualCategories, setActualCategories] = useState([]);
   const [newAppointmentCat, setNewAppointmentCat] = useState("");
-  let userID = localStorage.getItem("userID");
+  const [warningText, setWarningText] = useState("");
+  const [open, setOpen] = useState(false);
+  const userID = localStorage.getItem("userID");
 
   useEffect(() => {
     const loadDoctor = () => {
@@ -63,6 +65,7 @@ const ProfileForm = (props) => {
           console.log(cat.id);
           return cat;
         }
+        return false;
       });
       console.log(newCat);
       let isExist = false;
@@ -70,9 +73,12 @@ const ProfileForm = (props) => {
         if (cat.id === newCat.id) {
           isExist = true;
         }
+        return false;
       });
       if (isExist) {
         console.log("this category exist, you can edit it");
+        setOpen(true);
+        setWarningText("This category exist, you can edit it.");
       } else {
         console.log("new cateogry added");
         addDoctorAppointmentCategory(userID, newCat.name, newCat.id, 0).then(
@@ -165,6 +171,8 @@ const ProfileForm = (props) => {
       >
         Edit
       </Button>
+
+      <Message variant="warning" text={warningText} open={open}></Message>
     </Box>
   );
 };
