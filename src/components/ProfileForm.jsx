@@ -10,6 +10,7 @@ import {
   Typography,
   Select,
   MenuItem,
+  IconButton,
 } from "@mui/material/";
 import {
   getUser,
@@ -18,6 +19,8 @@ import {
   addDoctorAppointmentCategory,
   getAppointmentCategories,
 } from "../firebase";
+import EditIcon from "@mui/icons-material/Edit";
+import CancelIcon from "@mui/icons-material/Cancel";
 import Message from "./Message";
 
 const ProfileForm = (props) => {
@@ -29,6 +32,7 @@ const ProfileForm = (props) => {
   const [warningText, setWarningText] = useState("");
   const [successText, setSuccessText] = useState("");
   const [open, setOpen] = useState(false);
+  const [disableText, setDisableText] = useState(true);
   const userID = localStorage.getItem("userID");
 
   useEffect(() => {
@@ -53,15 +57,26 @@ const ProfileForm = (props) => {
     setNewPrice(e.target.value);
   };
 
+  //TO DO call func
   const handleEdit = (e) => {
     e.preventDefault();
     updateUser(userID, doctorPhone);
+    //updateDoctorCategories()
     setOpen(true);
     setWarningText("");
     setSuccessText("Edit form send.");
   };
+
+  //TO DO implement func
+  const deleteCategory = () => {};
   const handleNewAppointmentCat = (event) => {
     setNewAppointmentCat(event.target.value);
+  };
+  const editOn = () => {
+    setDisableText(false);
+  };
+  const editOff = () => {
+    setDisableText(true);
   };
 
   const addCategory = () => {
@@ -128,6 +143,7 @@ const ProfileForm = (props) => {
         onChange={onChangePhone}
         autoFocus
       />
+
       <List>
         <ListItem>
           <ListItemText> Nazwa </ListItemText>
@@ -136,10 +152,23 @@ const ProfileForm = (props) => {
         </ListItem>
         {docAppointmentCategories.map((appointment, i) => (
           <ListItem key={i}>
-            <ListItemText> {appointment.name} </ListItemText>
-            <TextField value={appointment.estimatedTime}> </TextField>
-            <TextField value={appointment.price}> </TextField>
+            <ListItemText style={{ minWidth: "30%" }}>
+              {appointment.name}
+            </ListItemText>
+            <ListItemText>
+              <TextField
+                value={appointment.estimatedTime}
+                disabled={disableText}
+              ></TextField>
+            </ListItemText>
+            <ListItemText>
+              <TextField
+                value={appointment.price}
+                disabled={disableText}
+              ></TextField>
+            </ListItemText>
             <Button
+              onClick={deleteCategory}
               variant="contained"
               sx={{
                 ml: 1,
@@ -186,12 +215,26 @@ const ProfileForm = (props) => {
           <Button variant="contained" onClick={addCategory}>
             +
           </Button>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+          >
+            <IconButton size="large" onClick={editOn}>
+              <EditIcon />
+            </IconButton>
+            <IconButton size="large" onClick={editOff}>
+              <CancelIcon />
+            </IconButton>
+          </Grid>
         </Grid>
       </Grid>
       <Button
         type="submit"
         fullWidth
         variant="contained"
+        disabled={disableText}
         sx={{
           mt: 3,
           mb: 2,
