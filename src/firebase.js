@@ -10,7 +10,8 @@ import {
     collection,
     where,
     getDocs,
-    addDoc
+    addDoc,
+    deleteDoc
 } from 'firebase/firestore/lite'
 import {
     getAuth,
@@ -264,7 +265,12 @@ function getAppointmentCategories() {
 function getDoctorAppointmentCategories(uid) {
     return getDocs(collection(db, collections.doctors + '/' + uid + '/' + collections.categories)).then(snap => {
         let result = []
-        snap.forEach(q => result.push(q.data()))
+        snap.forEach(q => {
+            let x = q.data()
+            x.id = q.id
+            result.push(x)
+        }
+            )
         //console.log(result)
         return result
     })
@@ -272,12 +278,29 @@ function getDoctorAppointmentCategories(uid) {
 
 async function addDoctorAppointmentCategory(uid, eta, categoryID, price) {
     let category = await getDocById(collections.categories, categoryID)
-    addDoc(collection(db, collections.doctors + '/' + uid + '/' + collections.categories), {
+    setDoc(doc(db, collections.doctors + '/' + uid + '/' + collections.categories, categoryID), {
         "estimatedTime": eta,
-        "id": categoryID,
+        //"id": categoryID,
         "name": category.name,
         "price": price
     })
+}
+
+async function removeDoctorAppointmentCategory(uid, categoryID) {
+    console.log(categoryID)
+    deleteDoc(doc(db, collections.doctors + '/' + uid + '/' + collections.categories, categoryID))
+}
+
+async function updateDoctorCategories(uid, categories){
+    categories.forEach(element => {
+        let category = getDocById(collections.categories, element.id).then(category => {
+            console.log('DUPA')
+        setDoc(doc(db, collections.doctors + '/' + uid + '/' + collections.categories, element.id), {
+            "estimatedTime": element.estimatedTime,
+            "name": category.name,
+            "price": element.price
+        }, {merge: true})
+    })})    
 }
 
 function sortArrayBy(array, property) {
@@ -307,6 +330,8 @@ export {
     getAppointmentCategories,
     getDoctorAppointmentCategories,
     addDoctorAppointmentCategory,
+    removeDoctorAppointmentCategory,
     updateUser,
-    sortArrayBy
+    sortArrayBy,
+    updateDoctorCategories
 }

@@ -18,10 +18,14 @@ import {
   getDoctorAppointmentCategories,
   addDoctorAppointmentCategory,
   getAppointmentCategories,
+  updateDoctorCategories,
+  removeDoctorAppointmentCategory,
+
 } from "../firebase";
 import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Message from "./Message";
+import { doc } from "firebase/firestore/lite";
 
 const ProfileForm = (props) => {
   const [doctorPhone, setDoctorPhone] = useState("");
@@ -61,14 +65,28 @@ const ProfileForm = (props) => {
   const handleEdit = (e) => {
     e.preventDefault();
     updateUser(userID, doctorPhone);
-    //updateDoctorCategories()
+    updateDoctorCategories(userID, docAppointmentCategories)
     setOpen(true);
     setWarningText("");
     setSuccessText("Edit form send.");
   };
 
   //TO DO implement func
-  const deleteCategory = () => {};
+  const deleteCategory = (i, e) => {
+    removeDoctorAppointmentCategory(userID, docAppointmentCategories[i].id)
+    const newlist = docAppointmentCategories.splice(i, 1)
+    setDocAppointmentCategories(newlist)
+
+  };
+
+const updateTypes = (e, i, col) => {
+    let items = [...docAppointmentCategories]
+    let item = {...items[i]}
+    item[col] = e.target.value
+    items[i] = item
+    setDocAppointmentCategories(items)
+}
+
   const handleNewAppointmentCat = (event) => {
     setNewAppointmentCat(event.target.value);
   };
@@ -109,7 +127,7 @@ const ProfileForm = (props) => {
         Object.assign(newCat, { price: newPrice });
         addDoctorAppointmentCategory(
           userID,
-          newCat.name,
+          30,
           newCat.id,
           newPrice
         ).then(() => {
@@ -159,16 +177,18 @@ const ProfileForm = (props) => {
               <TextField
                 value={appointment.estimatedTime}
                 disabled={disableText}
+                onChange={event => updateTypes(event, i, 'estimatedTime')}
               ></TextField>
             </ListItemText>
             <ListItemText>
               <TextField
                 value={appointment.price}
                 disabled={disableText}
+                onChange={event => updateTypes(event, i, 'price')}
               ></TextField>
             </ListItemText>
             <Button
-              onClick={deleteCategory}
+              onClick={event => deleteCategory(i, event)}
               variant="contained"
               sx={{
                 ml: 1,
